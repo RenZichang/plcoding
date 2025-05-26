@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>三、 如何编码？ &#8212; Plcoding用户手册</title>
+    <title>三、如何编码？ &#8212; Plcoding用户手册</title>
   
   
   
@@ -63,7 +63,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="四、如何译码？" href="04_decode.html" />
-    <link rel="prev" title="二、 如何构造极化码？" href="02_construct.html" />
+    <link rel="prev" title="二、如何构造极化码？" href="02_construct.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -182,14 +182,14 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_index.html">极化码简介</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="01_what.html">什么是极化码？</a></li>
-<li class="toctree-l2"><a class="reference internal" href="02_construct.html">如何构造极化码？</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">三、 如何编码？</a></li>
-
-<li class="toctree-l2"><a class="reference internal" href="04_decode.html">如何译码？</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_index.html">第一章：极化码简介</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_what.html">一、什么是极化码？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_construct.html">二、如何构造极化码？</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">三、如何编码？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_decode.html">四、如何译码？</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_Basics/00_index.html">第二章：极化码基础</a></li>
 </ul>
 
     </div>
@@ -328,7 +328,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>三、 如何编码？</h1>
+    <h1>三、如何编码？</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -338,24 +338,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">三、 如何编码？</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.1 极化码的编码策略</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.2 生成矩阵法</a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#g-4-g-2-otimes-2-g-2-otimes-g-2-begin-bmatrix-g-2-mathbf-0-g-2-g-2-end-bmatrix">举例：
-$$
-G_4 = G_2^{\otimes 2} = G_2 \otimes G_2 =
-\begin{bmatrix}
-G_2 &amp; \mathbf{0} \
-G_2 &amp; G_2
-\end{bmatrix}</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.3 递归运算法</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.4 比特翻转置换</a></li>
 </ul>
-</li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -367,7 +354,7 @@ G_2 &amp; G_2
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1>三、 如何编码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<h1>三、如何编码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <section id="id2">
 <h2>3.1 极化码的编码策略<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p><strong>基本思想</strong>：</p>
@@ -402,24 +389,8 @@ G_2 &amp; G_2
 </ul>
 </li>
 </ol>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="g-4-g-2-otimes-2-g-2-otimes-g-2-begin-bmatrix-g-2-mathbf-0-g-2-g-2-end-bmatrix">
-<h1>举例：
-$$
-G_4 = G_2^{\otimes 2} = G_2 \otimes G_2 =
-\begin{bmatrix}
-G_2 &amp; \mathbf{0} \
-G_2 &amp; G_2
-\end{bmatrix}<a class="headerlink" href="#g-4-g-2-otimes-2-g-2-otimes-g-2-begin-bmatrix-g-2-mathbf-0-g-2-g-2-end-bmatrix" title="Link to this heading">#</a></h1>
-<p>\begin{bmatrix}
-1 &amp; 0 &amp; 0 &amp; 0 \
-1 &amp; 1 &amp; 0 &amp; 0 \
-1 &amp; 0 &amp; 1 &amp; 0 \
-1 &amp; 1 &amp; 1 &amp; 1
-\end{bmatrix}
-$$</p>
 <p>注意上述运算都应当模2！</p>
+</section>
 <hr class="docutils" />
 <section id="id4">
 <h2>3.3 递归运算法<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
@@ -551,7 +522,7 @@ $$</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">二、 如何构造极化码？</p>
+        <p class="prev-next-title">二、如何构造极化码？</p>
       </div>
     </a>
     <a class="right-next"
@@ -579,24 +550,11 @@ $$</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">三、 如何编码？</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.1 极化码的编码策略</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.2 生成矩阵法</a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#g-4-g-2-otimes-2-g-2-otimes-g-2-begin-bmatrix-g-2-mathbf-0-g-2-g-2-end-bmatrix">举例：
-$$
-G_4 = G_2^{\otimes 2} = G_2 \otimes G_2 =
-\begin{bmatrix}
-G_2 &amp; \mathbf{0} \
-G_2 &amp; G_2
-\end{bmatrix}</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.3 递归运算法</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.4 比特翻转置换</a></li>
 </ul>
-</li>
-</ul>
-
   </nav></div>
 
 </div></div>

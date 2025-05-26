@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>二、 如何构造极化码？ &#8212; Plcoding用户手册</title>
+    <title>二、如何构造极化码？ &#8212; Plcoding用户手册</title>
   
   
   
@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '01_Introduction/02_construct';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="三、 如何编码？" href="03_encode.html" />
+    <link rel="next" title="三、如何编码？" href="03_encode.html" />
     <link rel="prev" title="一、什么是极化码？" href="01_what.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -182,14 +182,14 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_index.html">极化码简介</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="01_what.html">什么是极化码？</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">如何构造极化码？</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03_encode.html">三、 如何编码？</a></li>
-
-<li class="toctree-l2"><a class="reference internal" href="04_decode.html">如何译码？</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_index.html">第一章：极化码简介</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_what.html">一、什么是极化码？</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">二、如何构造极化码？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_encode.html">三、如何编码？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_decode.html">四、如何译码？</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_Basics/00_index.html">第二章：极化码基础</a></li>
 </ul>
 
     </div>
@@ -328,7 +328,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>二、 如何构造极化码？</h1>
+    <h1>二、如何构造极化码？</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -338,8 +338,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.1 什么叫“获得一个极化码”？</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.2 构造算法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v-s">2.1 理论 v.s. 实践</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2 构造算法</a></li>
 </ul>
             </nav>
         </div>
@@ -352,9 +352,9 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1>二、 如何构造极化码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<section id="id2">
-<h2>2.1 什么叫“获得一个极化码”？<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<h1>二、如何构造极化码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="v-s">
+<h2>2.1 理论 v.s. 实践<a class="headerlink" href="#v-s" title="Link to this heading">#</a></h2>
 <p>极化码（<em>Polar Codes</em>）不是某一特定码的名称，而是<strong>一类遵循相同理论与设计思想的码</strong>。</p>
 <p><strong>极化码的理论共性</strong>：</p>
 <ul class="simple">
@@ -366,8 +366,8 @@ document.write(`
 <p>极化码的最优性，是理论上的。在实际场景下，不论什么码，总存在错误概率。一般来讲，码长越长、码率越低的极化码纠错能力越强，但过长的码长会带来巨大的计算复杂度，而过低的码率则会带来较差的信息承载能力。因此，在使用前，应当依据具体应用需求，权衡冻结位和信息位的选取，从而获得一个可用的极化码。</p>
 </section>
 <hr class="docutils" />
-<section id="id3">
-<h2>2.2 构造算法<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h2>2.2 构造算法<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p><strong>目的</strong>：确定各个极化信道的可靠度。</p>
 <p><strong>已有方案</strong>：</p>
 <ol class="arabic simple">
@@ -491,7 +491,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">三、 如何编码？</p>
+        <p class="prev-next-title">三、如何编码？</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -511,8 +511,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.1 什么叫“获得一个极化码”？</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.2 构造算法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v-s">2.1 理论 v.s. 实践</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2 构造算法</a></li>
 </ul>
   </nav></div>
 
