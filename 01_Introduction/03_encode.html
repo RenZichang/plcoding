@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>三、 如何编码？ &#8212; Plcoding用户手册</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01_Introduction/03_encode';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="四、如何译码？" href="04_decode.html" />
+    <link rel="prev" title="二、 如何构造极化码？" href="02_construct.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../main.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Plcoding用户手册 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Plcoding用户手册 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../main.html">
+                    Plcoding用户手册
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_index.html">极化码简介</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_what.html">什么是极化码？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_construct.html">如何构造极化码？</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">三、 如何编码？</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="04_decode.html">如何译码？</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/01_Introduction/03_encode.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>三、 如何编码？</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">三、 如何编码？</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.1 极化码的编码策略</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.2 生成矩阵法</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#g-4-g-2-otimes-2-g-2-otimes-g-2-begin-bmatrix-g-2-mathbf-0-g-2-g-2-end-bmatrix">举例：
+$$
+G_4 = G_2^{\otimes 2} = G_2 \otimes G_2 =
+\begin{bmatrix}
+G_2 &amp; \mathbf{0} \
+G_2 &amp; G_2
+\end{bmatrix}</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.3 递归运算法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.4 比特翻转置换</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>三、 如何编码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>3.1 极化码的编码策略<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><strong>基本思想</strong>：</p>
+<p>将不可靠信道进行冻结（Frozen），仅在可靠信道上传输信息（Info）。</p>
+<blockquote>
+<div><p>这只是形象化描述，请勿望文生义。所谓“信道”有复杂的数学表达式，所谓“冻结”也并非“不使用”而是“使用已知信息填充”。</p>
+</div></blockquote>
+<p><strong>冻结集</strong>：</p>
+<p>假设我们现在已经明确了想要的极化码的码长<span class="math notranslate nohighlight">\(N=2^n\)</span>、码率<span class="math notranslate nohighlight">\(R\)</span>，并且经过之前的构造阶段，我们获取到了一个非常关键的信息：各极化信道的可靠度<span class="math notranslate nohighlight">\(\mathcal{H}_0,\ldots,\mathcal{H}_{N-1}\)</span>。那么，定义冻结集<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>是满足如下三个条件的集合：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{F} \subset \{0, \ldots, N-1\}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\lvert \mathcal{F} \rvert = \lceil N(1 - R) \rceil\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\forall i \in \mathcal{F}, j \not\in \mathcal{F}, \mathcal{H}_i \leqslant \mathcal{H}_j\)</span></p></li>
+</ul>
+<p>简单来说，冻结集<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>，就是前<span class="math notranslate nohighlight">\(N(1 - R)\)</span>个最不可靠的信道所对应的索引<span class="math notranslate nohighlight">\(i \in \{0, \ldots, N-1\}\)</span>。在接下来的编码过程中，将不会在这些信道上传输未知消息。</p>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h2>3.2 生成矩阵法<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>极化码是一种线性码，准确来说，是一种“陪集码”，可以使用生成矩阵进行编码。步骤如下：</p>
+<ol class="arabic simple">
+<li><p>构造一个序列<span class="math notranslate nohighlight">\(u_0,\ldots,u_{N-1}\)</span>，其中：</p>
+<ul class="simple">
+<li><p>对冻结集部分置<span class="math notranslate nohighlight">\(0\)</span>，也即令<span class="math notranslate nohighlight">\(u_i=0,i\in\mathcal{F}\)</span>；</p></li>
+<li><p>在其余位置放置信息比特；</p></li>
+</ul>
+</li>
+<li><p>执行矩阵运算得到编码序列<span class="math notranslate nohighlight">\(\vec{x}=\vec{u}\cdot G_N\)</span>，其中：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(G_N=G_2^{\otimes n}\)</span>，符号<span class="math notranslate nohighlight">\(\otimes n\)</span>表示<span class="math notranslate nohighlight">\(n\)</span>次Kronecker积；</p></li>
+<li><p><span class="math notranslate nohighlight">\(G_2=\begin{pmatrix} 1 &amp; 0 \\ 1 &amp; 1 \end{pmatrix}\)</span>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="g-4-g-2-otimes-2-g-2-otimes-g-2-begin-bmatrix-g-2-mathbf-0-g-2-g-2-end-bmatrix">
+<h1>举例：
+$$
+G_4 = G_2^{\otimes 2} = G_2 \otimes G_2 =
+\begin{bmatrix}
+G_2 &amp; \mathbf{0} \
+G_2 &amp; G_2
+\end{bmatrix}<a class="headerlink" href="#g-4-g-2-otimes-2-g-2-otimes-g-2-begin-bmatrix-g-2-mathbf-0-g-2-g-2-end-bmatrix" title="Link to this heading">#</a></h1>
+<p>\begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \
+1 &amp; 1 &amp; 0 &amp; 0 \
+1 &amp; 0 &amp; 1 &amp; 0 \
+1 &amp; 1 &amp; 1 &amp; 1
+\end{bmatrix}
+$$</p>
+<p>注意上述运算都应当模2！</p>
+<hr class="docutils" />
+<section id="id4">
+<h2>3.3 递归运算法<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>根据生成矩阵<span class="math notranslate nohighlight">\(G_N\)</span>的定义不难知道，其中<span class="math notranslate nohighlight">\(1\)</span>的数量为<span class="math notranslate nohighlight">\(3^n\)</span>，而总元素数量为<span class="math notranslate nohighlight">\(4^n\)</span>，随着码长增加矩阵密度趋于<span class="math notranslate nohighlight">\(0\)</span>。因此除了执行复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N^2)\)</span>的矩阵运算之外，应该还存在一种复杂度更低的编码方案，这就是这一小节要介绍的递归运算法。</p>
+<blockquote>
+<div><p>事实上，递归运算才是极化码真正的编码算法，生成矩阵法实际上只是一种等价表示形式。</p>
+</div></blockquote>
+<p>先考虑码长为<span class="math notranslate nohighlight">\(N=2\)</span>的情况，我们希望输入信道的随机变量<span class="math notranslate nohighlight">\(x_1,x_2\)</span>，是由另外两个随机变量<span class="math notranslate nohighlight">\(u_1,u_2\)</span>经过下图所示的计算过程得到的：<br />
+<img alt="码长为2的极化码" src="../_images/len2.png" /><br />
+在上图中，显然有<span class="math notranslate nohighlight">\((x_1,x_2) = (u_1,u_2) \cdot G_2\)</span>。</p>
+<p>接下来，我们把这个过程拓展到<span class="math notranslate nohighlight">\(N=4\)</span>，继续应用之前的做法，对<span class="math notranslate nohighlight">\(x_1,x_2\)</span>和<span class="math notranslate nohighlight">\(x_3,x_4\)</span>这两对随机变量，我们希望它们是由另外两对随机变量<span class="math notranslate nohighlight">\(v_1,v_2\)</span>和<span class="math notranslate nohighlight">\(v_3,v_4\)</span>经过同样的计算过程得到的，如下图所示：<br />
+<img alt="码长为4的极化码-极化1层" src="../_images/len4_01.png" /><br />
+但如果只做一层构造，将是非常平凡的拓展。此时注意到，在第一层构造中，<span class="math notranslate nohighlight">\(v_1\)</span>和<span class="math notranslate nohighlight">\(v_3\)</span>地位相同，<span class="math notranslate nohighlight">\(v_2\)</span>和<span class="math notranslate nohighlight">\(v_4\)</span>地位相同，所以我们可以把它们划分到同一组，然后对这两组再进行一层构造：<br />
+<img alt="码长为4的极化码-极化2层" src="../_images/len4_02.png" /><br />
+其中<span class="math notranslate nohighlight">\(v_1,v_3\)</span>是由另一对随机变量<span class="math notranslate nohighlight">\(u_1,u_2\)</span>经过<span class="math notranslate nohighlight">\(G_2\)</span>计算得到，而<span class="math notranslate nohighlight">\(v_2,v_4\)</span>是由<span class="math notranslate nohighlight">\(u_3,u_4\)</span>得到。</p>
+<p>在从<span class="math notranslate nohighlight">\(N=2\)</span>拓展到<span class="math notranslate nohighlight">\(N=4\)</span>的过程中，出现了一种分组方式，稍加分析不难发现这是一种类似于扑克牌洗牌的顺序，即将<span class="math notranslate nohighlight">\(\{1,2,\ldots,N\}\)</span>对应到<span class="math notranslate nohighlight">\(\{1, N/2+1, 2, N/2+2, \ldots, N/2, N\}\)</span>。如果将其记作<span class="math notranslate nohighlight">\(R_N\)</span>，那么我们就得到了任意<span class="math notranslate nohighlight">\(N=2^n\)</span>的构造过程：<br />
+<img alt="码长为N的极化码" src="../_images/lenN.png" /><br />
+不难发现这个递归结构共有<span class="math notranslate nohighlight">\(\log{N}\)</span>层，每一层计算复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span>，因此总计算复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span></p>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h2>3.4 比特翻转置换<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>如果你真正动手实现了递归编码算法，那么会发现，对于输入的序列<span class="math notranslate nohighlight">\(u_{1:N}\)</span>，编码结果<span class="math notranslate nohighlight">\(x_{1:N} \neq u_{1:N} \cdot G_N\)</span>。</p>
+<p>这是因为，递归编码和生成矩阵编码之间，相差了一个比特翻转排序（Bit-Reversal Permutation）。这是在蝶形变换计算结构（如DFT）中，经常出现的一种排序：对一个给定的索引<span class="math notranslate nohighlight">\(i\in\{0,1,\ldots,2^n-1\}\)</span>，首先将其表示为<span class="math notranslate nohighlight">\(n\)</span>位比特形式，然后将这<span class="math notranslate nohighlight">\(n\)</span>位比特进行首尾颠倒，最后将<span class="math notranslate nohighlight">\(i\)</span>放到新得到的索引上。</p>
+<p>举例：码长为<span class="math notranslate nohighlight">\(2^4=16\)</span>，索引<span class="math notranslate nohighlight">\(i=7=(0111)_2\)</span>，将其首尾颠倒得到<span class="math notranslate nohighlight">\(i'=(1110)_2=14\)</span>。</p>
+<p>代码示例：</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">plcoding</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="c1"># 设定码长为N=2^n</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="n">N</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">n</span><span class="p">)</span>
+<span class="c1"># 随机生成一个序列</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,))</span>
+<span class="c1"># 使用生成矩阵法进行编码</span>
+<span class="n">GN</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">kron_power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]),</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">GN</span><span class="p">)</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">GN</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">plcoding</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;plcoding&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 使用递归计算法</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="c1"># 从右向左计算，层数增加，分组大小减半</span>
+<span class="n">W_size</span> <span class="o">=</span> <span class="n">N</span>
+<span class="k">while</span> <span class="n">W_size</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="c1"># 两两进行极化变换</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">x2</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="n">tmp</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x2</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># 组内执行洗牌置换</span>
+    <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">W_size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">W_size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)):</span>
+            <span class="n">x2</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">x2</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">W_size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">W_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">W_size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">x1</span> <span class="o">==</span> <span class="n">x2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">perm</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">bitrev_perm</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="p">(</span><span class="n">x1</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span> <span class="o">==</span> <span class="n">x2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./01_Introduction"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_construct.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">二、 如何构造极化码？</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_decode.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">四、如何译码？</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">三、 如何编码？</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.1 极化码的编码策略</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.2 生成矩阵法</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#g-4-g-2-otimes-2-g-2-otimes-g-2-begin-bmatrix-g-2-mathbf-0-g-2-g-2-end-bmatrix">举例：
+$$
+G_4 = G_2^{\otimes 2} = G_2 \otimes G_2 =
+\begin{bmatrix}
+G_2 &amp; \mathbf{0} \
+G_2 &amp; G_2
+\end{bmatrix}</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.3 递归运算法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.4 比特翻转置换</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Zichang Ren
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
