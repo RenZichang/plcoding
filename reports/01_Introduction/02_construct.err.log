@@ -20,7 +20,7 @@ import plcoding
 flip_prob = 0.11
 # 信道容量=1-噪声熵
 channel_cap = 1 - plcoding.h2_of(flip_prob)
-print(f"比特翻转概率为{flip_prob:.2f}时，信道容量为{channel_cap:.2f}[bit]")
+print(f"信道容量{channel_cap:.2f}[bit]")
 ------------------
 
 

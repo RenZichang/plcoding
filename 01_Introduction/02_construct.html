@@ -363,7 +363,7 @@ document.write(`
 <li><p>设计策略：<strong>冻结位（Frozen Bits）+信息位（Information Bits）</strong></p></li>
 </ul>
 <p><strong>极化码的构造</strong>：</p>
-<p>极化码的最优性，是理论上的。在实际场景下，不论什么码，总存在错误概率。一般来讲，码长越长、码率越低的极化码纠错能力越强，但过长的码长会带来巨大的计算复杂度，而过低的码率则会带来较差的信息承载能力。因此，在使用前，应当依据具体应用需求，权衡冻结位和信息位的选取，从而获得一个可用的极化码。</p>
+<p>极化码的最优性是理论上的，但在实际场景下，不论什么码，总存在错误概率。一般来讲，码长越长、码率越低的极化码纠错能力越强，但过长的码长会带来巨大的计算复杂度，而过低的码率则会带来较差的信息承载能力。因此，在使用前，应当依据具体应用需求，权衡冻结位和信息位的选取，从而获得一个可用的极化码。</p>
 </section>
 <hr class="docutils" />
 <section id="id2">
@@ -371,16 +371,16 @@ document.write(`
 <p><strong>目的</strong>：确定各个极化信道的可靠度。</p>
 <p><strong>已有方案</strong>：</p>
 <ol class="arabic simple">
-<li><p>Monte Carlo 法：通过大量仿真统计极化信道的错误率；</p></li>
-<li><p><strong>密度演化算法（Density Evolution）</strong>：基于消息传递理论分析误差传播；</p></li>
+<li><p>Monte Carlo 法：通过大量仿真，估计各极化信道的判决错误率；</p></li>
+<li><p>密度演化算法（Density Evolution）：基于LDPC的阈值分析理论，分析极化码各比特位的判决错误率；</p></li>
 <li><p>高斯近似（Gaussian Approximation）：对密度演化中的消息分布进行高斯建模，简化计算；</p></li>
 <li><p>信道退化（Channel Degradation）：构造退化信道序列估计可靠度；</p></li>
 <li><p>一些启发式算法，如极化权重算法（Polarization Weight）、遗传算法等，兼顾性能与复杂度。</p></li>
 </ol>
-<p>从初学者的角度考虑，<strong>BEC构造法</strong>是不错的入手点：</p>
+<p>从初学者的角度考虑，<strong>BEC构造法</strong>是不错的入手点，因为它具有如下特点：</p>
 <ul class="simple">
-<li><p>直观的理论依据;</p></li>
-<li><p>编程实现简单;</p></li>
+<li><p>理论依据直观；</p></li>
+<li><p>编程实现简单；</p></li>
 <li><p>在基础场景下具备良好性能。</p></li>
 </ul>
 <p>我们考虑下面这样一个比特翻转信道</p>
@@ -391,7 +391,7 @@ document.write(`
 <span class="n">flip_prob</span> <span class="o">=</span> <span class="mf">0.11</span>
 <span class="c1"># 信道容量=1-噪声熵</span>
 <span class="n">channel_cap</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">h2_of</span><span class="p">(</span><span class="n">flip_prob</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;比特翻转概率为</span><span class="si">{</span><span class="n">flip_prob</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">时，信道容量为</span><span class="si">{</span><span class="n">channel_cap</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">[bit]&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;信道容量</span><span class="si">{</span><span class="n">channel_cap</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">[bit]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -416,7 +416,8 @@ document.write(`
 </div>
 </div>
 </div>
-<p><strong>BEC构造法的实现</strong>：</p>
+<p>通过上图可以大概明白极化码为什么需要构造、以及合适的参数一般是多少。</p>
+<p>在建立了直观印象之后，接下来，我们关注<strong>BEC构造法的具体实现</strong>：</p>
 <p>给定一个实数<span class="math notranslate nohighlight">\(e \in (0, 1)\)</span>，我们根据它计算得到两个新的值<span class="math notranslate nohighlight">\(e^2\)</span>和<span class="math notranslate nohighlight">\(2e - e^2\)</span>，也即：<br />
 <span class="math notranslate nohighlight">\((e) \to (e^2, 2e - e^2)\)</span><br />
 然后我们分别对这两个新的值，继续执行上述操作。也即若记<span class="math notranslate nohighlight">\(\alpha = e^2, \beta = 2e - e^2\)</span>，那么：<br />
