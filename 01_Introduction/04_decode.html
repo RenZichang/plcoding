@@ -57,6 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '01_Introduction/04_decode';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -187,7 +189,20 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">四、如何译码？</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../02_Basics/00_index.html">第二章：极化码基础</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_Basics/00_index.html">第二章：极化码基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/01_standardsc.html">一、标准SC译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/02_polarization.html">二、信道极化现象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/03_polarcoding.html">三、极化编码技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/04_decoding.html">四、译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/05_construction.html">五、构造</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/01_monotone.html">一、单调链极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/02_source.html">二、信源极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/03_scldecoding.html">三、SCL译码</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -336,8 +351,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sc">4.1 最小和SC译码</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.2 标准SC译码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1. 信道的输出信息</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sc">2. 最小和SC译码</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.1 码长为2的极化码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.2 码长为4的极化码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.3 码长为2的极化码（三种子运算）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-2-n">2.4 码长为<span class="math notranslate nohighlight">\(N=2^n\)</span>的极化码（连续消除规则）</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -351,14 +372,66 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>四、如何译码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<section id="sc">
-<h2>4.1 最小和SC译码<a class="headerlink" href="#sc" title="Link to this heading">#</a></h2>
-<p>待续</p>
-</section>
 <hr class="docutils" />
 <section id="id2">
-<h2>4.2 标准SC译码<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p>待续</p>
+<h2>1. 信道的输出信息<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>在介绍极化码的译码算法之前，必须先建立关于“信道”这个数学对象的基本认知。例如，对于一个比特翻转概率为<span class="math notranslate nohighlight">\(p\)</span>的信道，如果在某次使用过程中，信道输出比特<span class="math notranslate nohighlight">\(1\)</span>，请问输入的原比特可能是多少？</p>
+<p>解答：若记输入的随机变量为<span class="math notranslate nohighlight">\(X\)</span>，输出的随机变量为<span class="math notranslate nohighlight">\(Y\)</span>，那么根据Bayes公式：
+$<span class="math notranslate nohighlight">\(\Pr(X|Y)\Pr(Y)=\Pr(Y|X)\Pr(X)\)</span><span class="math notranslate nohighlight">\(
+我们实际是求条件概率：
+\)</span><span class="math notranslate nohighlight">\(\Pr(X=x|Y=1)=\Pr(Y=1|X=x)\Pr(X=x)/\Pr(Y=1)\)</span><span class="math notranslate nohighlight">\(
+其中\)</span>x\in{0,1}<span class="math notranslate nohighlight">\(。如果输入的随机变量\)</span>X<span class="math notranslate nohighlight">\(是均匀分布，那么上式将退化为比较简单的信道转移概率：
+\)</span><span class="math notranslate nohighlight">\(\begin{cases}
+\Pr(X=0|Y=1)=p\\
+\Pr(X=1|Y=1)=1-p
+\end{cases}\)</span>$</p>
+<p>从数学上来讲，虽然信道只输出了一个比特<span class="math notranslate nohighlight">\(1\)</span>，但我们可以获取的完整信息远不止如此，结合我们关于信道的认知，可以进一步求出关于输入随机变量<span class="math notranslate nohighlight">\(X\)</span>的条件概率分布<span class="math notranslate nohighlight">\(\Pr(X=x|Y=1)\)</span>。显然这样一种“软”的结果包含了更多的信息，有利于获取更好的通信性能。在现代研究中，除了存在特殊的硬件限制外，我们将总是使用软译码策略。</p>
+<blockquote>
+<div><p>极化码也存在比特翻转等硬译码算法，但性能不如LDPC，除理论研究外很少考虑。</p>
+</div></blockquote>
+<p>为了令信道纠错码的译码器可以方便地获取Bayes条件概率，这部分计算负担往往由通信接收方的解调器承担，即执行所谓的“软判决”。对于二进制情况，我们定义对数似然比（Log-Likelihood Ratio）为：
+$<span class="math notranslate nohighlight">\(\text{LLR}(X|\text{Some Condition})=\log{\dfrac{\Pr(X=0|\text{Some Condition})}{\Pr(X=1|\text{Some Condition})}}\)</span><span class="math notranslate nohighlight">\(
+不难发现，它是关于条件概率分布\)</span>\Pr(X=x|\text{Some Condition})<span class="math notranslate nohighlight">\(的充分统计量，在知道对数似然比后，我们可以立即计算\)</span>x=0<span class="math notranslate nohighlight">\(和\)</span>x=1$对应的条件概率，而不会出现混淆。出于这种良好性质，在许多二进制纠错码研究工作中，都会选用对数似然比描述它们的译码算法。</p>
+<blockquote>
+<div><p>非二进制纠错码不存在似然比，只能使用条件概率分布进行译码。</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="sc">
+<h2>2. 最小和SC译码<a class="headerlink" href="#sc" title="Link to this heading">#</a></h2>
+<p>为了尽量避免劝退的复杂公式，我们将首先描述最小和译码算法。该译码算法简单到令人怀疑其正确性，其设计初衷也是为了提高硬件计算效率。关于正确性的理论推导，将推迟到后续章节介绍。</p>
+<section id="id3">
+<h3>2.1 码长为2的极化码<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>码长为2的极化码结构如下图所示：<br />
+<img alt="码长为2的极化码" src="../_images/len2.png" /><br />
+容易知道，其码率只有<span class="math notranslate nohighlight">\(R=1/2\)</span>一种，冻结位是<span class="math notranslate nohighlight">\(u_1=0\)</span>，发送端只能在<span class="math notranslate nohighlight">\(u_2\)</span>上传输信息比特。不论信道是翻转信道、擦除信道还是AWGN信道，我们总能在接收到<span class="math notranslate nohighlight">\(y_1\)</span>和<span class="math notranslate nohighlight">\(y_2\)</span>之后，计算对应的<span class="math notranslate nohighlight">\(x_1\)</span>和<span class="math notranslate nohighlight">\(x_2\)</span>的对数似然比，分别记作<span class="math notranslate nohighlight">\(L_1\)</span>和<span class="math notranslate nohighlight">\(L_2\)</span>，那么在<strong>已知信道的统计特征、以及<span class="math notranslate nohighlight">\(y_1\)</span>、<span class="math notranslate nohighlight">\(y_2\)</span>和<span class="math notranslate nohighlight">\(u_1\)</span>的值</strong>的条件下，比特<span class="math notranslate nohighlight">\(u_2\)</span>的对数似然比为：<span class="math notranslate nohighlight">\(L_1 + L_2\)</span>。</p>
+</section>
+<section id="id4">
+<h3>2.2 码长为4的极化码<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>码长为4的极化码结构如下图所示：<br />
+<img alt="码长为4的极化码" src="../_images/len4_02.png" /><br />
+当码长稍微增加一些时，事情突然变得十分复杂。即便预设一个固定的冻结集，比如令<span class="math notranslate nohighlight">\(u_1=u_3=0\)</span>，我们也难以将上述码长为2的情况直接推广到这里。比如，在已知<span class="math notranslate nohighlight">\(x_{1:4}\)</span>的对数似然比分别为<span class="math notranslate nohighlight">\(L_{1:4}\)</span>的情况下，没有手段求出<span class="math notranslate nohighlight">\(v_{1:4}\)</span>的似然比，也就无从谈起求<span class="math notranslate nohighlight">\(u_2和u_4\)</span>的似然比。我们需要对码长为2的极化码做更多的讨论。</p>
+</section>
+<section id="id5">
+<h3>2.3 码长为2的极化码（三种子运算）<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p><img alt="二元极化核" src="../_images/len2.png" /></p>
+<p><strong>① 已知<span class="math notranslate nohighlight">\(L^x_1,L^x_2\)</span>，求<span class="math notranslate nohighlight">\(L^u_1\)</span></strong>：<span class="math notranslate nohighlight">\(L^u_1 = \text{sign}(L^x_1) \times \text{sign}(L^x_2) \times \min \left\{|L^x_1|, |L^x_2|\right\}\)</span></p>
+<p><strong>② 已知<span class="math notranslate nohighlight">\(L^x_1,L^x_2\)</span>和<span class="math notranslate nohighlight">\(u_1\)</span>的值，求<span class="math notranslate nohighlight">\(L^u_2\)</span></strong>：<span class="math notranslate nohighlight">\(L^u_2 = (1 - 2u_1) \cdot L^x_1 + L^x_2\)</span></p>
+<p><strong>③ 已知<span class="math notranslate nohighlight">\(u_1,u_2\)</span>的值，求<span class="math notranslate nohighlight">\(x_1,x_2\)</span>的值</strong>：<span class="math notranslate nohighlight">\(x_1=u_1+u_2,x_2=u_2\)</span></p>
+</section>
+<section id="n-2-n">
+<h3>2.4 码长为<span class="math notranslate nohighlight">\(N=2^n\)</span>的极化码（连续消除规则）<a class="headerlink" href="#n-2-n" title="Link to this heading">#</a></h3>
+<p>在定义了上述三种运算之后，我们进一步地规定一个译码顺序：连续消除（Successive Cancellation）。</p>
+<p>具体来说，译码过程是从右到左逐层进行的，在每一层中，对所有码长为2的极化码子结构，都应当先执行运算①，然后再跳转到下一层，继续根据目前已知的似然比（数量已减半）递归地执行子运算①，直到计算到最左一层的<span class="math notranslate nohighlight">\(u_1\)</span>后，我们对它进行判决，得到一个确定的值，接下来就可以执行子运算②计算并判决<span class="math notranslate nohighlight">\(u_2\)</span>，然后我们根据这两个确定的值使用子运算③跳转到上一层。此时在这一层我们会获得一些更新后的值，使得我们可以执行子运算②。通过这样一种类似<strong>二叉树左序遍历</strong>的过程，最终可以实现完整的译码。</p>
+<p>上面的叙述比较抽象，我们看一个具体的例子，在序列<span class="math notranslate nohighlight">\(u_{1:4}\)</span>中冻结<span class="math notranslate nohighlight">\(u_1=0\)</span>，其他位传输信息，则某次译码过程如下：</p>
+<p><img alt="SC译码第一段" src="../_images/sc_p1.jpg" /><br />
+<img alt="SC译码第二段" src="../_images/sc_p2.jpg" /><br />
+<img alt="SC译码第三段" src="../_images/sc_p3.jpg" /></p>
+<p>上面这个例子很容易推广到<span class="math notranslate nohighlight">\(N=2^n\)</span>码长情况下，不做赘述。至于连续消除规则背后的原理，它涉及极化码的根基，不可能在短篇幅内解释清楚，你在这里只需要强制认同它。如果你是深度研究者，推荐阅读Arikan曾提出的一种用于进行Slepian-Wolf编码的单调链极化码（Monotone Chain Polar Codes），其中采用了所谓的单调消除规则，或许可以开拓你的研究思路。</p>
+<blockquote>
+<div><p>本手册的对应库中，plcoding.cpp_core.iterator中的PolarIterator对象支持任意顺序译码，可用于支持更深入的理论研究。</p>
+</div></blockquote>
+</section>
 </section>
 </section>
 
@@ -426,8 +499,14 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sc">4.1 最小和SC译码</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.2 标准SC译码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1. 信道的输出信息</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sc">2. 最小和SC译码</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.1 码长为2的极化码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.2 码长为4的极化码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.3 码长为2的极化码（三种子运算）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-2-n">2.4 码长为<span class="math notranslate nohighlight">\(N=2^n\)</span>的极化码（连续消除规则）</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

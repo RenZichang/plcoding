@@ -189,7 +189,20 @@
 <li class="toctree-l2"><a class="reference internal" href="04_decode.html">四、如何译码？</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../02_Basics/00_index.html">第二章：极化码基础</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_Basics/00_index.html">第二章：极化码基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/01_standardsc.html">一、标准SC译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/02_polarization.html">二、信道极化现象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/03_polarcoding.html">三、极化编码技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/04_decoding.html">四、译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/05_construction.html">五、构造</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/01_monotone.html">一、单调链极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/02_source.html">二、信源极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/03_scldecoding.html">三、SCL译码</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -338,8 +351,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v-s">2.1 理论 v.s. 实践</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2 构造算法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v-s">1 理论 v.s. 实践</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2 构造算法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bec">3. BEC构造法</a></li>
 </ul>
             </nav>
         </div>
@@ -353,21 +367,25 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>二、如何构造极化码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
 <section id="v-s">
-<h2>2.1 理论 v.s. 实践<a class="headerlink" href="#v-s" title="Link to this heading">#</a></h2>
-<p>极化码（<em>Polar Codes</em>）不是某一特定码的名称，而是<strong>一类遵循相同理论与设计思想的码</strong>。</p>
+<h2>1 理论 v.s. 实践<a class="headerlink" href="#v-s" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p>依照学界惯用术语，极化码（Polar Codes）并不是某一特定码的名称，而是一类遵循相同理论与设计思想的码的总称。</p>
+</div></blockquote>
 <p><strong>极化码的理论共性</strong>：</p>
 <ul class="simple">
-<li><p>基本性质：<strong>线性码（Linear Codes）</strong></p></li>
-<li><p>理论基础：<strong>信道极化现象（Channel Polarization）</strong></p></li>
-<li><p>设计策略：<strong>冻结位（Frozen Bits）+信息位（Information Bits）</strong></p></li>
+<li><p>基本性质：线性码（Linear Codes）</p></li>
+<li><p>理论基础：信道极化现象（Channel Polarization）</p></li>
+<li><p>码字生成：指定了一个特定极化码的冻结位（Frozen Bits），和指定了这个特定极化码中各个不同码字的信息位（Information Bits）</p></li>
 </ul>
-<p><strong>极化码的构造</strong>：</p>
-<p>极化码的最优性是理论上的，但在实际场景下，不论什么码，总存在错误概率。一般来讲，码长越长、码率越低的极化码纠错能力越强，但过长的码长会带来巨大的计算复杂度，而过低的码率则会带来较差的信息承载能力。因此，在使用前，应当依据具体应用需求，权衡冻结位和信息位的选取，从而获得一个可用的极化码。</p>
+<p><strong>为什么要构造极化码</strong>：</p>
+<p>极化码的最优性，针对的是这一类码而言，并非对某一个码而言的。换句话说，对任意一个符合Shannon理论的场景而言，在极化码这一类码中，都存在一个满足要求的码。这个码是一定存在的，但并不总是容易得到的。</p>
+<p>在实际场景下，不论什么码，译码错误概率总不会是严格的<span class="math notranslate nohighlight">\(0\)</span>。一般来讲，码长越长、码率越低的极化码纠错能力越强，但过长的码长会带来巨大的计算复杂度，而过低的码率则会带来较差的信息承载能力。因此，在使用前，应当依据具体应用需求，权衡冻结位和信息位的选取，从而获得一个可用的极化码。</p>
 </section>
 <hr class="docutils" />
 <section id="id2">
-<h2>2.2 构造算法<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<h2>2 构造算法<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p><strong>目的</strong>：确定各个极化信道的可靠度。</p>
 <p><strong>已有方案</strong>：</p>
 <ol class="arabic simple">
@@ -377,13 +395,8 @@ document.write(`
 <li><p>信道退化（Channel Degradation）：构造退化信道序列估计可靠度；</p></li>
 <li><p>一些启发式算法，如极化权重算法（Polarization Weight）、遗传算法等，兼顾性能与复杂度。</p></li>
 </ol>
-<p>从初学者的角度考虑，<strong>BEC构造法</strong>是不错的入手点，因为它具有如下特点：</p>
-<ul class="simple">
-<li><p>理论依据直观；</p></li>
-<li><p>编程实现简单；</p></li>
-<li><p>在基础场景下具备良好性能。</p></li>
-</ul>
-<p>我们考虑下面这样一个比特翻转信道</p>
+<p><strong>直观体会</strong>：</p>
+<p>我们考虑一个比特翻转概率为<span class="math notranslate nohighlight">\(0.11\)</span>的简单信道，使用BEC构造法构造出一系列不同码率的极化码，然后分别测试它们的译码错误率：</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">plcoding</span>
@@ -392,6 +405,7 @@ document.write(`
 <span class="c1"># 信道容量=1-噪声熵</span>
 <span class="n">channel_cap</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">h2_of</span><span class="p">(</span><span class="n">flip_prob</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;信道容量</span><span class="si">{</span><span class="n">channel_cap</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">[bit]&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">run</span> ./codes/bler_rate.py
 </pre></div>
 </div>
 </div>
@@ -399,26 +413,30 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>信道容量0.50[bit]
 </pre></div>
 </div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "2819c7da13e74ae787e084c5047f9eb9", "version_major": 2, "version_minor": 0}</script><img alt="../_images/ee9f3ccdde17023a8f16baaf5c034b76c62a81d38a14c51e557fcb42769656f7.png" src="../_images/ee9f3ccdde17023a8f16baaf5c034b76c62a81d38a14c51e557fcb42769656f7.png" />
 </div>
 </div>
-<p>我们使用BEC构造法，构造出一系列不同码率的极化码，然后测试它们的译码错误率：</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">run</span> ./codes/bler_rate.py
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "b61d93f18502486396b950f1e950e11d", "version_major": 2, "version_minor": 0}</script><img alt="../_images/1ae16dc10cce02410463eda556dc1cb9452b6a0a0ac6dde806b685df37185efe.png" src="../_images/1ae16dc10cce02410463eda556dc1cb9452b6a0a0ac6dde806b685df37185efe.png" />
-</div>
-</div>
-<p>通过上图可以大概明白极化码为什么需要构造、以及合适的参数一般是多少。</p>
-<p>在建立了直观印象之后，接下来，我们关注<strong>BEC构造法的具体实现</strong>：</p>
-<p>给定一个实数<span class="math notranslate nohighlight">\(e \in (0, 1)\)</span>，我们根据它计算得到两个新的值<span class="math notranslate nohighlight">\(e^2\)</span>和<span class="math notranslate nohighlight">\(2e - e^2\)</span>，也即：<br />
-<span class="math notranslate nohighlight">\((e) \to (e^2, 2e - e^2)\)</span><br />
-然后我们分别对这两个新的值，继续执行上述操作。也即若记<span class="math notranslate nohighlight">\(\alpha = e^2, \beta = 2e - e^2\)</span>，那么：<br />
-<span class="math notranslate nohighlight">\((\alpha, \beta) \to (\alpha^2, 2\alpha - \alpha^2,\beta^2,  2\beta - \beta^2)\)</span><br />
-依照上述过程，对码长为<span class="math notranslate nohighlight">\(N=2^n\)</span>的极化码而言，应当重复<span class="math notranslate nohighlight">\(n\)</span>次。</p>
+<p>在码长有限的实际场景下，并不是只要编码码率低于信道容量，就可以实现无错误通信。事实上，从上图不难看出，短码长下极化码的性能还是很差的。虽然这一定程度上跟我们所采用了非最优的BEC算法有关，但即便采用最优构造法，性能也不会好太多。</p>
+<p>一般来讲，我们会先选择一组合适的参数，构造一个相应的极化码，然后把它应用到各种不同的场景下，观察其在不同场景下的性能表现，再以此为基础进行进一步微调。不过如果是做理论研究，可能需要更关注极化码的内禀性质，而不会过多关注某一组具体的参数。</p>
+</section>
+<hr class="docutils" />
+<section id="bec">
+<h2>3. BEC构造法<a class="headerlink" href="#bec" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p>二进制擦除信道（Binary Erasure Channels, BEC）</p>
+</div></blockquote>
+<p><strong>算法特点</strong>：</p>
+<ol class="arabic simple">
+<li><p>理论依据直观；</p></li>
+<li><p>编程实现简单；</p></li>
+<li><p>在简单场景下具备足够良好的性能。</p></li>
+</ol>
+<p><strong>BEC构造法的具体实现</strong>：</p>
+<ul class="simple">
+<li><p>给定一个实数<span class="math notranslate nohighlight">\(e \in (0, 1)\)</span>，我们根据它计算得到两个新的值<span class="math notranslate nohighlight">\(e^2\)</span>和<span class="math notranslate nohighlight">\(2e - e^2\)</span>，也即<span class="math notranslate nohighlight">\((e) \to (e^2, 2e - e^2)\)</span>；</p></li>
+<li><p>分别对这两个新的值，继续执行上述操作：记<span class="math notranslate nohighlight">\(\alpha = e^2, \beta = 2e - e^2\)</span>，那么有<span class="math notranslate nohighlight">\((\alpha, \beta) \to (\alpha^2, 2\alpha - \alpha^2,\beta^2,  2\beta - \beta^2)\)</span></p></li>
+</ul>
+<p>依照上述过程，对码长为<span class="math notranslate nohighlight">\(N=2^n\)</span>的极化码而言，应当重复<span class="math notranslate nohighlight">\(n\)</span>次，最终会得到长度为<span class="math notranslate nohighlight">\(N\)</span>的序列，它们表示<span class="math notranslate nohighlight">\(N\)</span>个极化信道各自的可靠度。这个过程很容易通过代码实现：</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 初始化几个关键值</span>
@@ -428,8 +446,8 @@ document.write(`
 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">new_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">old_list</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">element</span> <span class="o">**</span> <span class="mi">2</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">element</span> <span class="o">-</span> <span class="n">element</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">element</span> <span class="o">**</span> <span class="mi">2</span>                <span class="c1"># e^2</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">element</span> <span class="o">-</span> <span class="n">element</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># 2e-e^2</span>
         <span class="n">new_list</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
     <span class="n">old_list</span> <span class="o">=</span> <span class="n">new_list</span>
 <span class="c1"># 简单绘制一下</span>
@@ -511,8 +529,9 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v-s">2.1 理论 v.s. 实践</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2 构造算法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v-s">1 理论 v.s. 实践</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2 构造算法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bec">3. BEC构造法</a></li>
 </ul>
   </nav></div>
 

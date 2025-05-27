@@ -189,7 +189,20 @@
 <li class="toctree-l2"><a class="reference internal" href="04_decode.html">四、如何译码？</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../02_Basics/00_index.html">第二章：极化码基础</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_Basics/00_index.html">第二章：极化码基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/01_standardsc.html">一、标准SC译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/02_polarization.html">二、信道极化现象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/03_polarcoding.html">三、极化编码技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/04_decoding.html">四、译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/05_construction.html">五、构造</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/01_monotone.html">一、单调链极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/02_source.html">二、信源极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/03_scldecoding.html">三、SCL译码</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -338,10 +351,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">技术亮点</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">纠错编码技术的发展历程（简略）</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">极化码研究方向</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">极化编码的经典范式</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1. 技术亮点</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2. 纠错编码技术的发展历程</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3. 极化码研究内容</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">4. 极化码的经典范式</a></li>
 </ul>
             </nav>
         </div>
@@ -355,57 +368,62 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>一、什么是极化码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<p>极化码（Polar Codes）由土耳其教授 Erdal Arikan 提出：<br />
+<hr class="docutils" />
+<p>极化码（Polar Codes）是由土耳其教授 Erdal Arikan：<br />
 <img alt="Arikan教授" src="../_images/arikan.png" /></p>
-<p>首次发表在 2008 年的国际信息论会议：<em>IEEE International Symposium on Information Theory</em></p>
-<p>是一项具有划时代意义的纠错编码技术</p>
+<p>于2008年首次在国际信息论会议 IEEE International Symposium on Information Theory 上提出的一种信道纠错码技术，是该领域近年来出现的一个划时代意义的发现，挑战了自Turbo码以来，只有为编码结构引入随机性才能接近Shannon界的固有认知，极大地激发了学术界的研究热情，</p>
 <hr class="docutils" />
 <section id="id2">
-<h2>技术亮点<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p>极化码具有亚线性的编译码复杂度：<span class="math notranslate nohighlight">\(\mathcal{O}(N \log N)\)</span></p>
-<p>理论上被严格证明可以达到对称二进制输入无记忆信道（Symmetric Binary-Input Memoryless Channels）的信道容量。</p>
-<p>这在编码理论历史上是一个前无古人的突破，极大地激发了学术界的研究热情。</p>
+<h2>1. 技术亮点<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>在理论上已严格证明，可以达到对称二进制输入无记忆信道（Symmetric Binary-Input Memoryless Channels）的信道容量。</p>
+<blockquote>
+<div><p>尽管仅上述一项特点就已经足以称得上是划时代的发现，极化码在随后研究中被发现在很多经典问题下都是最优的。</p>
+</div></blockquote>
+<p>极化码具有亚线性的编译码复杂度：<span class="math notranslate nohighlight">\(\mathcal{O}(N \log N)\)</span>。</p>
+<blockquote>
+<div><p>自从Shannon证明了随机编码大概率就是最优的这一特点之后，人们就已经发现了各种最优编码，但它们最少都是多项式复杂度的。像低到亚线性这种程度是绝无仅有的，因为这意味着这类码具有了实际应用的价值。</p>
+</div></blockquote>
 </section>
 <hr class="docutils" />
 <section id="id3">
-<h2>纠错编码技术的发展历程（简略）<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<h2>2. 纠错编码技术的发展历程<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p><strong>Hamming 码阶段</strong></p></li>
-<li><p><strong>代数编码</strong>（如 BCH、RS）</p></li>
-<li><p><strong>随机编码</strong>（如 LDGM）</p></li>
-<li><p><strong>序列译码</strong>（如 卷积码、Turbo码）</p></li>
-<li><p><strong>低密度校验码</strong>（LDPC）</p></li>
-<li><p><strong>极化码</strong>（Polar Codes）</p></li>
+<li><p>Hamming 码阶段，最初的尝试；</p></li>
+<li><p>通过线性代数、高等代数等，设计确定性的数学结构对抗随机干扰（如Golay码、BCH码、RS码等）；</p></li>
+<li><p>为编码结构引入一定随机性，尝试实现实用化的随机编码（如LDGM码）；</p></li>
+<li><p>抛弃块结构，转而面向半无限长码长的序列编译码（卷积码）；</p></li>
+<li><p>第一个足够接近Shannon界的纠错码，序列编译码+随机性（Turbo码）；</p></li>
+<li><p>低密度奇偶校验码（LDPC）的重新发现，传统编码结构+超大码长+随机性；</p></li>
+<li><p>极化码（Polar Codes），基于全新的、确定性的数学体系而发展出来的低复杂度纠错码技术；</p></li>
+<li><p>to be continued…</p></li>
 </ol>
 </section>
 <hr class="docutils" />
 <section id="id4">
-<h2>极化码研究方向<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
-<p><strong>理论研究</strong></p>
+<h2>3. 极化码研究内容<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p><strong>理论问题</strong></p>
 <ul class="simple">
-<li><p>有限码长下的性能极限</p></li>
-<li><p>有损信源压缩、SW 问题（Slepian–Wolf）</p></li>
-<li><p>多址接入信道、多终端问题</p></li>
-<li><p>通用极化码、非固定冻结集设计</p></li>
-<li><p>误比特率（BER）</p></li>
+<li><p>有损信源压缩、Slepian–Wolf问题等经典信息论问题</p></li>
+<li><p>有限码长等新时代信息论问题</p></li>
+<li><p>多址接入、广播信道等半实用化半理论化问题</p></li>
+<li><p>基于极化理论的广义极化码</p></li>
+<li><p>基于经典极化编码技术的进一步改进，如基于半冻结集的极化码</p></li>
 </ul>
-<p><strong>实用应用</strong></p>
+<p><strong>实用问题</strong></p>
 <ul class="simple">
-<li><p>非 <span class="math notranslate nohighlight">\(2^n\)</span> 码长构造与优化</p></li>
-<li><p>码率匹配、自适应极化结构</p></li>
-<li><p>与卷积码等的级联结构</p></li>
-<li><p>高吞吐量实现、早停机制</p></li>
-<li><p>编译码算法的并行化优化</p></li>
+<li><p>非<span class="math notranslate nohighlight">\(2^n\)</span>码长极化码的构造与最优性论证</p></li>
+<li><p>码率匹配、自适应码率调整</p></li>
+<li><p>编译码算法的并行化、早停机制、高吞吐量设计</p></li>
+<li><p>与其他码的级联</p></li>
 </ul>
 </section>
 <hr class="docutils" />
 <section id="id5">
-<h2>极化编码的经典范式<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<h2>4. 极化码的经典范式<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>明确应用场景，执行构造算法，获得一个极化码；</p></li>
-<li><p>根据构造结果，在冻结位输入比特<span class="math notranslate nohighlight">\(0\)</span>，在信息位输入待传输比特；</p></li>
-<li><p>将编码结果送入信道传输；</p></li>
-<li><p>根据先验知识，对接收码字进行译码。</p></li>
+<li><p>明确应用场景，执行<strong>构造</strong>算法，获得一个极化码；</p></li>
+<li><p>根据构造结果，执行<strong>编码</strong>过程，在冻结位输入比特<span class="math notranslate nohighlight">\(0\)</span>，在信息位输入待传输比特，</p></li>
+<li><p>根据信道输出信息和其他已有的先验知识，对接收码字进行<strong>译码</strong>。</p></li>
 </ol>
 </section>
 </section>
@@ -474,10 +492,10 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">技术亮点</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">纠错编码技术的发展历程（简略）</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">极化码研究方向</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">极化编码的经典范式</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1. 技术亮点</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2. 纠错编码技术的发展历程</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3. 极化码研究内容</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">4. 极化码的经典范式</a></li>
 </ul>
   </nav></div>
 

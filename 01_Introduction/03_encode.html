@@ -189,7 +189,20 @@
 <li class="toctree-l2"><a class="reference internal" href="04_decode.html">四、如何译码？</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../02_Basics/00_index.html">第二章：极化码基础</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_Basics/00_index.html">第二章：极化码基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/01_standardsc.html">一、标准SC译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/02_polarization.html">二、信道极化现象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/03_polarcoding.html">三、极化编码技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/04_decoding.html">四、译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Basics/05_construction.html">五、构造</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/01_monotone.html">一、单调链极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/02_source.html">二、信源极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/03_scldecoding.html">三、SCL译码</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -338,10 +351,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.1 极化码的编码策略</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.2 生成矩阵法</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.3 递归运算法</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.4 比特翻转置换</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1 极化码的编码策略</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2 生成矩阵法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3 递归运算法</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1 码长为2的极化码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.2 码长为4的极化码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-shuffle-permutation">3.3 码长为<span class="math notranslate nohighlight">\(2^n\)</span>的极化码与洗牌置换（Shuffle Permutation）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4 比特翻转置换</a></li>
 </ul>
             </nav>
         </div>
@@ -355,15 +373,14 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>三、如何编码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
 <section id="id2">
-<h2>3.1 极化码的编码策略<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p><strong>基本思想</strong>：</p>
-<p>将不可靠信道进行冻结（Frozen），仅在可靠信道上传输信息（Info）。</p>
+<h2>1 极化码的编码策略<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><strong>基本思想</strong>：将不可靠信道进行冻结（Frozen），仅在可靠信道上传输信息（Info）。</p>
 <blockquote>
-<div><p>这只是形象化描述，请勿望文生义。所谓“信道”有复杂的数学表达式，所谓“冻结”也并非“不使用”而是“使用已知信息填充”。</p>
+<div><p>这只是形象化描述，请勿望文生义。所谓“信道”有复杂的数学表达式，所谓“冻结”也并非废弃，而是使用已知信息进行填充。</p>
 </div></blockquote>
-<p><strong>冻结集</strong>：</p>
-<p>假设我们现在已经明确了想要的极化码的码长<span class="math notranslate nohighlight">\(N=2^n\)</span>、码率<span class="math notranslate nohighlight">\(R\)</span>，并且经过之前的构造阶段，我们获取到了一个非常关键的信息：各极化信道的可靠度<span class="math notranslate nohighlight">\(\mathcal{H}_0,\ldots,\mathcal{H}_{N-1}\)</span>。那么，定义冻结集<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>是满足如下三个条件的集合：</p>
+<p><strong>冻结集</strong>：假设我们现在已经明确了想要的极化码的码长<span class="math notranslate nohighlight">\(N=2^n\)</span>、码率<span class="math notranslate nohighlight">\(R\)</span>，并且经过之前的构造阶段，我们获取到了一个非常关键的信息：各极化信道的可靠度<span class="math notranslate nohighlight">\(\mathcal{H}_0,\ldots,\mathcal{H}_{N-1}\)</span>。那么，定义冻结集<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>是满足如下三个条件的集合：</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mathcal{F} \subset \{0, \ldots, N-1\}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\lvert \mathcal{F} \rvert = \lceil N(1 - R) \rceil\)</span></p></li>
@@ -373,19 +390,19 @@ document.write(`
 </section>
 <hr class="docutils" />
 <section id="id3">
-<h2>3.2 生成矩阵法<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<h2>2 生成矩阵法<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <p>极化码是一种线性码，准确来说，是一种“陪集码”，可以使用生成矩阵进行编码。步骤如下：</p>
 <ol class="arabic simple">
 <li><p>构造一个序列<span class="math notranslate nohighlight">\(u_0,\ldots,u_{N-1}\)</span>，其中：</p>
 <ul class="simple">
-<li><p>对冻结集部分置<span class="math notranslate nohighlight">\(0\)</span>，也即令<span class="math notranslate nohighlight">\(u_i=0,i\in\mathcal{F}\)</span>；</p></li>
-<li><p>在其余位置放置信息比特；</p></li>
+<li><p>对冻结集部分置<span class="math notranslate nohighlight">\(0\)</span>，也即强制令<span class="math notranslate nohighlight">\(\forall i \in \mathcal{F}: u_i=0\)</span>；</p></li>
+<li><p>在其余位置上依次填充想要传输的信息比特；</p></li>
 </ul>
 </li>
-<li><p>执行矩阵运算得到编码序列<span class="math notranslate nohighlight">\(\vec{x}=\vec{u}\cdot G_N\)</span>，其中：</p>
+<li><p>执行矩阵运算得到编码序列<span class="math notranslate nohighlight">\(\vec{x}=\vec{u}\cdot \mathbf{G}_N\)</span>，其中：</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(G_N=G_2^{\otimes n}\)</span>，符号<span class="math notranslate nohighlight">\(\otimes n\)</span>表示<span class="math notranslate nohighlight">\(n\)</span>次Kronecker积；</p></li>
-<li><p><span class="math notranslate nohighlight">\(G_2=\begin{pmatrix} 1 &amp; 0 \\ 1 &amp; 1 \end{pmatrix}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{G}_N=\mathbf{G}_2^{\otimes n}\)</span>，符号<span class="math notranslate nohighlight">\(\otimes n\)</span>表示进行<span class="math notranslate nohighlight">\(n\)</span>次Kronecker积；</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{G}_2=\begin{pmatrix} 1 &amp; 0 \\ 1 &amp; 1 \end{pmatrix}\)</span>.</p></li>
 </ul>
 </li>
 </ol>
@@ -393,28 +410,37 @@ document.write(`
 </section>
 <hr class="docutils" />
 <section id="id4">
-<h2>3.3 递归运算法<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
-<p>根据生成矩阵<span class="math notranslate nohighlight">\(G_N\)</span>的定义不难知道，其中<span class="math notranslate nohighlight">\(1\)</span>的数量为<span class="math notranslate nohighlight">\(3^n\)</span>，而总元素数量为<span class="math notranslate nohighlight">\(4^n\)</span>，随着码长增加矩阵密度趋于<span class="math notranslate nohighlight">\(0\)</span>。因此除了执行复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N^2)\)</span>的矩阵运算之外，应该还存在一种复杂度更低的编码方案，这就是这一小节要介绍的递归运算法。</p>
+<h2>3 递归运算法<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>根据生成矩阵<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>的定义不难知道，其中<span class="math notranslate nohighlight">\(1\)</span>的数量为<span class="math notranslate nohighlight">\(3^n\)</span>，而总元素数量为<span class="math notranslate nohighlight">\(4^n\)</span>，随着码长增加矩阵密度趋于<span class="math notranslate nohighlight">\(0\)</span>。因此除了执行复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N^2)\)</span>的矩阵运算之外，应该还存在一种复杂度更低的编码方案，这就是这一小节要介绍的递归运算法。</p>
 <blockquote>
-<div><p>事实上，递归运算才是极化码真正的编码算法，生成矩阵法实际上只是一种等价表示形式。</p>
+<div><p>事实上，递归运算才是极化码真正的编码算法，生成矩阵<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>实际上只是递归运算的一种便于描述的等价表示。</p>
 </div></blockquote>
+<section id="id5">
+<h3>3.1 码长为2的极化码<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <p>先考虑码长为<span class="math notranslate nohighlight">\(N=2\)</span>的情况，我们希望输入信道的随机变量<span class="math notranslate nohighlight">\(x_1,x_2\)</span>，是由另外两个随机变量<span class="math notranslate nohighlight">\(u_1,u_2\)</span>经过下图所示的计算过程得到的：<br />
 <img alt="码长为2的极化码" src="../_images/len2.png" /><br />
-在上图中，显然有<span class="math notranslate nohighlight">\((x_1,x_2) = (u_1,u_2) \cdot G_2\)</span>。</p>
+在上图中，显然有<span class="math notranslate nohighlight">\((x_1,x_2) = (u_1,u_2) \cdot \mathbf{G}_2\)</span>。</p>
+</section>
+<section id="id6">
+<h3>3.2 码长为4的极化码<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <p>接下来，我们把这个过程拓展到<span class="math notranslate nohighlight">\(N=4\)</span>，继续应用之前的做法，对<span class="math notranslate nohighlight">\(x_1,x_2\)</span>和<span class="math notranslate nohighlight">\(x_3,x_4\)</span>这两对随机变量，我们希望它们是由另外两对随机变量<span class="math notranslate nohighlight">\(v_1,v_2\)</span>和<span class="math notranslate nohighlight">\(v_3,v_4\)</span>经过同样的计算过程得到的，如下图所示：<br />
 <img alt="码长为4的极化码-极化1层" src="../_images/len4_01.png" /><br />
-但如果只做一层构造，将是非常平凡的拓展。此时注意到，在第一层构造中，<span class="math notranslate nohighlight">\(v_1\)</span>和<span class="math notranslate nohighlight">\(v_3\)</span>地位相同，<span class="math notranslate nohighlight">\(v_2\)</span>和<span class="math notranslate nohighlight">\(v_4\)</span>地位相同，所以我们可以把它们划分到同一组，然后对这两组再进行一层构造：<br />
+但如果只做一层构造，我们实际上仍然在使用码长为<span class="math notranslate nohighlight">\(2\)</span>的极化码，这将是非常平凡的拓展。但是我们可以注意到，在第一层构造中，<span class="math notranslate nohighlight">\(v_1\)</span>和<span class="math notranslate nohighlight">\(v_3\)</span>地位相同，<span class="math notranslate nohighlight">\(v_2\)</span>和<span class="math notranslate nohighlight">\(v_4\)</span>地位相同，所以进一步构造中，可以把它们划分到同一组，然后对这两组再进行一层构造：<br />
 <img alt="码长为4的极化码-极化2层" src="../_images/len4_02.png" /><br />
-其中<span class="math notranslate nohighlight">\(v_1,v_3\)</span>是由另一对随机变量<span class="math notranslate nohighlight">\(u_1,u_2\)</span>经过<span class="math notranslate nohighlight">\(G_2\)</span>计算得到，而<span class="math notranslate nohighlight">\(v_2,v_4\)</span>是由<span class="math notranslate nohighlight">\(u_3,u_4\)</span>得到。</p>
+其中<span class="math notranslate nohighlight">\(v_1,v_3\)</span>是由另一对随机变量<span class="math notranslate nohighlight">\(u_1,u_2\)</span>经过<span class="math notranslate nohighlight">\(\mathbf{G}_2\)</span>计算得到，而<span class="math notranslate nohighlight">\(v_2,v_4\)</span>是由<span class="math notranslate nohighlight">\(u_3,u_4\)</span>得到。</p>
+</section>
+<section id="n-shuffle-permutation">
+<h3>3.3 码长为<span class="math notranslate nohighlight">\(2^n\)</span>的极化码与洗牌置换（Shuffle Permutation）<a class="headerlink" href="#n-shuffle-permutation" title="Link to this heading">#</a></h3>
 <p>在从<span class="math notranslate nohighlight">\(N=2\)</span>拓展到<span class="math notranslate nohighlight">\(N=4\)</span>的过程中，出现了一种分组方式，稍加分析不难发现这是一种类似于扑克牌洗牌的顺序，即将<span class="math notranslate nohighlight">\(\{1,2,\ldots,N\}\)</span>对应到<span class="math notranslate nohighlight">\(\{1, N/2+1, 2, N/2+2, \ldots, N/2, N\}\)</span>。如果将其记作<span class="math notranslate nohighlight">\(R_N\)</span>，那么我们就得到了任意<span class="math notranslate nohighlight">\(N=2^n\)</span>的构造过程：<br />
 <img alt="码长为N的极化码" src="../_images/lenN.png" /><br />
 不难发现这个递归结构共有<span class="math notranslate nohighlight">\(\log{N}\)</span>层，每一层计算复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span>，因此总计算复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span></p>
 </section>
+</section>
 <hr class="docutils" />
-<section id="id5">
-<h2>3.4 比特翻转置换<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
-<p>如果你真正动手实现了递归编码算法，那么会发现，对于输入的序列<span class="math notranslate nohighlight">\(u_{1:N}\)</span>，编码结果<span class="math notranslate nohighlight">\(x_{1:N} \neq u_{1:N} \cdot G_N\)</span>。</p>
-<p>这是因为，递归编码和生成矩阵编码之间，相差了一个比特翻转排序（Bit-Reversal Permutation）。这是在蝶形变换计算结构（如DFT）中，经常出现的一种排序：对一个给定的索引<span class="math notranslate nohighlight">\(i\in\{0,1,\ldots,2^n-1\}\)</span>，首先将其表示为<span class="math notranslate nohighlight">\(n\)</span>位比特形式，然后将这<span class="math notranslate nohighlight">\(n\)</span>位比特进行首尾颠倒，最后将<span class="math notranslate nohighlight">\(i\)</span>放到新得到的索引上。</p>
+<section id="id7">
+<h2>4 比特翻转置换<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>如果你真正动手实现了递归编码算法，那么会发现，对于输入的序列<span class="math notranslate nohighlight">\(u_{1:N}\)</span>，编码结果<span class="math notranslate nohighlight">\(x_{1:N} \neq u_{1:N} \cdot \mathbf{G}_N\)</span>。这是因为，递归编码和生成矩阵编码之间，相差了一个在蝶形变换计算结构（如离散傅里叶变换）中经常出现的置换顺序，被称为比特翻转置换（Bit-Reversal Permutation）。</p>
+<p><strong>比特翻转置换</strong>：将一个给定的索引<span class="math notranslate nohighlight">\(i\in\{0,1,\ldots,2^n-1\}\)</span>，表示为<span class="math notranslate nohighlight">\(n\)</span>位比特形式，然后将这<span class="math notranslate nohighlight">\(n\)</span>位比特进行首尾颠倒，从而得到新的索引。</p>
 <p>举例：码长为<span class="math notranslate nohighlight">\(2^4=16\)</span>，索引<span class="math notranslate nohighlight">\(i=7=(0111)_2\)</span>，将其首尾颠倒得到<span class="math notranslate nohighlight">\(i'=(1110)_2=14\)</span>。</p>
 <p>代码示例：</p>
 <div class="cell docutils container">
@@ -426,10 +452,18 @@ document.write(`
 <span class="n">n</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="n">N</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">n</span><span class="p">)</span>
 <span class="c1"># 随机生成一个序列</span>
 <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,))</span>
-<span class="c1"># 使用生成矩阵法进行编码</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 使用生成矩阵法进行编码</span>
 <span class="n">GN</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">kron_power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]),</span> <span class="n">n</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">GN</span><span class="p">)</span>
 <span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">GN</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># 简单展示一下极化码的生成矩阵，非常漂亮</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">GN</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -442,7 +476,7 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 使用递归计算法</span>
 <span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
-<span class="c1"># 从右向左计算，层数增加，分组大小减半</span>
+<span class="c1"># 从左向右计算，层数增加，分组大小减半</span>
 <span class="n">W_size</span> <span class="o">=</span> <span class="n">N</span>
 <span class="k">while</span> <span class="n">W_size</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
     <span class="c1"># 两两进行极化变换</span>
@@ -461,7 +495,8 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">x1</span> <span class="o">==</span> <span class="n">x2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 直接对比它们是不同的</span>
+<span class="p">(</span><span class="n">x1</span> <span class="o">==</span> <span class="n">x2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -473,7 +508,8 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">perm</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">bitrev_perm</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 需要经过比特翻转排序，才会得到相同的结果</span>
+<span class="n">perm</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">bitrev_perm</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 <span class="p">(</span><span class="n">x1</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span> <span class="o">==</span> <span class="n">x2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -551,10 +587,15 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.1 极化码的编码策略</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.2 生成矩阵法</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.3 递归运算法</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.4 比特翻转置换</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1 极化码的编码策略</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2 生成矩阵法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3 递归运算法</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1 码长为2的极化码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.2 码长为4的极化码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-shuffle-permutation">3.3 码长为<span class="math notranslate nohighlight">\(2^n\)</span>的极化码与洗牌置换（Shuffle Permutation）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4 比特翻转置换</a></li>
 </ul>
   </nav></div>
 

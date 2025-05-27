@@ -190,7 +190,20 @@
 <li class="toctree-l2"><a class="reference internal" href="01_Introduction/04_decode.html">四、如何译码？</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="02_Basics/00_index.html">第二章：极化码基础</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="02_Basics/00_index.html">第二章：极化码基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="02_Basics/01_standardsc.html">一、标准SC译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_Basics/02_polarization.html">二、信道极化现象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_Basics/03_polarcoding.html">三、极化编码技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_Basics/04_decoding.html">四、译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_Basics/05_construction.html">五、构造</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="03_Advanced/01_monotone.html">一、单调链极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_Advanced/02_source.html">二、信源极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_Advanced/03_scldecoding.html">三、SCL译码</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -341,8 +354,9 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一、基本情况</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">二、手册内容</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1. Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">2. Basics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 极化码简介</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. 极化码基础</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3. 极化码进阶</a></li>
 </ul>
 </li>
 </ul>
@@ -360,19 +374,22 @@ document.write(`
 <h1>Plcoding用户手册<a class="headerlink" href="#plcoding" title="Link to this heading">#</a></h1>
 <section id="id1">
 <h2>一、基本情况<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
-<p>这是配套我所编写的plcoding工具库所撰写的手册，还有我在助教阶段为学弟学妹讲解极化码时所采用的课件。希望可以帮助到有需要的人。</p>
+<p>这是配套我所编写的plcoding工具库所撰写的手册，还有我在助教阶段讲极化码时所采用的课件。希望可以帮助到有需要的人。</p>
 </section>
 <section id="id2">
 <h2>二、手册内容<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<section id="introduction">
-<h3>1. Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
-<p>给非常初级的初学者看的内容，首先简单介绍了极化码的研究背景，然后通过三个章节，介绍了最基础的极化码构造算法、编码算法和译码算法。</p>
-<p>对于极化码领域非初学者来说，这一章节也可以起到熟悉plcoding基本函数的作用。</p>
+<section id="id3">
+<h3>1. 极化码简介<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>给萌新看的非常初级的内容，简单介绍了极化码的研究背景，然后通过三个章节介绍了最基础的极化码构造算法、编码算法和译码算法。</p>
+<p>对于极化码领域非初学者来说，这一章节也可以起到熟悉plcoding基本函数的作用，不必跳过。</p>
 </section>
-<section id="basics">
-<h3>2. Basics<a class="headerlink" href="#basics" title="Link to this heading">#</a></h3>
-<p>W.I.P 待填充</p>
-<p>会对一些基本原理做较为深入的探讨。</p>
+<section id="id4">
+<h3>2. 极化码基础<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>会对一些基本原理做较为深入的探讨，适合在网上看了大量教程、但还没有亲自深入研究的初学者。</p>
+</section>
+<section id="id5">
+<h3>3. 极化码进阶<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>放了一些我自己做研究过程中的笔记，会涉及晦涩难懂的概念和理论，不保证可读性。欢迎感兴趣的同学阅览、交流。</p>
 </section>
 </section>
 <div class="toctree-wrapper compound">
@@ -436,8 +453,9 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一、基本情况</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">二、手册内容</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1. Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">2. Basics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 极化码简介</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. 极化码基础</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3. 极化码进阶</a></li>
 </ul>
 </li>
 </ul>
