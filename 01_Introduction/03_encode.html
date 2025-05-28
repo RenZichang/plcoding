@@ -351,15 +351,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1 极化码的编码策略</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2 生成矩阵法</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3 递归运算法</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1. 极化码的编码策略</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2. 生成矩阵法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3. 递归运算法</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1 码长为2的极化码</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.2 码长为4的极化码</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-shuffle-permutation">3.3 码长为<span class="math notranslate nohighlight">\(2^n\)</span>的极化码与洗牌置换（Shuffle Permutation）</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4 比特翻转置换</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4. 比特反转置换</a></li>
 </ul>
             </nav>
         </div>
@@ -373,9 +373,8 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>三、如何编码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<hr class="docutils" />
 <section id="id2">
-<h2>1 极化码的编码策略<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<h2>1. 极化码的编码策略<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p><strong>基本思想</strong>：将不可靠信道进行冻结（Frozen），仅在可靠信道上传输信息（Info）。</p>
 <blockquote>
 <div><p>这只是形象化描述，请勿望文生义。所谓“信道”有复杂的数学表达式，所谓“冻结”也并非废弃，而是使用已知信息进行填充。</p>
@@ -390,7 +389,7 @@ document.write(`
 </section>
 <hr class="docutils" />
 <section id="id3">
-<h2>2 生成矩阵法<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<h2>2. 生成矩阵法<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <p>极化码是一种线性码，准确来说，是一种“陪集码”，可以使用生成矩阵进行编码。步骤如下：</p>
 <ol class="arabic simple">
 <li><p>构造一个序列<span class="math notranslate nohighlight">\(u_0,\ldots,u_{N-1}\)</span>，其中：</p>
@@ -410,7 +409,7 @@ document.write(`
 </section>
 <hr class="docutils" />
 <section id="id4">
-<h2>3 递归运算法<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<h2>3. 递归运算法<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
 <p>根据生成矩阵<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>的定义不难知道，其中<span class="math notranslate nohighlight">\(1\)</span>的数量为<span class="math notranslate nohighlight">\(3^n\)</span>，而总元素数量为<span class="math notranslate nohighlight">\(4^n\)</span>，随着码长增加矩阵密度趋于<span class="math notranslate nohighlight">\(0\)</span>。因此除了执行复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N^2)\)</span>的矩阵运算之外，应该还存在一种复杂度更低的编码方案，这就是这一小节要介绍的递归运算法。</p>
 <blockquote>
 <div><p>事实上，递归运算才是极化码真正的编码算法，生成矩阵<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>实际上只是递归运算的一种便于描述的等价表示。</p>
@@ -438,9 +437,9 @@ document.write(`
 </section>
 <hr class="docutils" />
 <section id="id7">
-<h2>4 比特翻转置换<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
-<p>如果你真正动手实现了递归编码算法，那么会发现，对于输入的序列<span class="math notranslate nohighlight">\(u_{1:N}\)</span>，编码结果<span class="math notranslate nohighlight">\(x_{1:N} \neq u_{1:N} \cdot \mathbf{G}_N\)</span>。这是因为，递归编码和生成矩阵编码之间，相差了一个在蝶形变换计算结构（如离散傅里叶变换）中经常出现的置换顺序，被称为比特翻转置换（Bit-Reversal Permutation）。</p>
-<p><strong>比特翻转置换</strong>：将一个给定的索引<span class="math notranslate nohighlight">\(i\in\{0,1,\ldots,2^n-1\}\)</span>，表示为<span class="math notranslate nohighlight">\(n\)</span>位比特形式，然后将这<span class="math notranslate nohighlight">\(n\)</span>位比特进行首尾颠倒，从而得到新的索引。</p>
+<h2>4. 比特反转置换<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>如果你真正动手实现了递归编码算法，那么会发现，对于输入的序列<span class="math notranslate nohighlight">\(u_{1:N}\)</span>，编码结果<span class="math notranslate nohighlight">\(x_{1:N} \neq u_{1:N} \cdot \mathbf{G}_N\)</span>。这是因为，递归编码和生成矩阵编码之间，相差了一个在蝶形变换计算结构（如离散傅里叶变换）中经常出现的置换顺序，被称为比特反转置换（Bit-Reversal Permutation）。</p>
+<p><strong>比特反转置换</strong>：将一个给定的索引<span class="math notranslate nohighlight">\(i\in\{0,1,\ldots,2^n-1\}\)</span>，表示为<span class="math notranslate nohighlight">\(n\)</span>位比特形式，然后将这<span class="math notranslate nohighlight">\(n\)</span>位比特进行首尾颠倒，从而得到新的索引。</p>
 <p>举例：码长为<span class="math notranslate nohighlight">\(2^4=16\)</span>，索引<span class="math notranslate nohighlight">\(i=7=(0111)_2\)</span>，将其首尾颠倒得到<span class="math notranslate nohighlight">\(i'=(1110)_2=14\)</span>。</p>
 <p>代码示例：</p>
 <div class="cell docutils container">
@@ -508,7 +507,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 需要经过比特翻转排序，才会得到相同的结果</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 需要经过比特反转排序，才会得到相同的结果</span>
 <span class="n">perm</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">bitrev_perm</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 <span class="p">(</span><span class="n">x1</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span> <span class="o">==</span> <span class="n">x2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </pre></div>
@@ -587,15 +586,15 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1 极化码的编码策略</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2 生成矩阵法</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3 递归运算法</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1. 极化码的编码策略</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2. 生成矩阵法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3. 递归运算法</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1 码长为2的极化码</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.2 码长为4的极化码</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-shuffle-permutation">3.3 码长为<span class="math notranslate nohighlight">\(2^n\)</span>的极化码与洗牌置换（Shuffle Permutation）</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4 比特翻转置换</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4. 比特反转置换</a></li>
 </ul>
   </nav></div>
 

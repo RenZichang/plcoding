@@ -351,8 +351,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v-s">1 理论 v.s. 实践</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2 构造算法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v-s">1. 理论 v.s. 实践</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2. 构造算法</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bec">3. BEC构造法</a></li>
 </ul>
             </nav>
@@ -367,25 +367,24 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>二、如何构造极化码？<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<hr class="docutils" />
 <section id="v-s">
-<h2>1 理论 v.s. 实践<a class="headerlink" href="#v-s" title="Link to this heading">#</a></h2>
+<h2>1. 理论 v.s. 实践<a class="headerlink" href="#v-s" title="Link to this heading">#</a></h2>
 <blockquote>
 <div><p>依照学界惯用术语，极化码（Polar Codes）并不是某一特定码的名称，而是一类遵循相同理论与设计思想的码的总称。</p>
 </div></blockquote>
 <p><strong>极化码的理论共性</strong>：</p>
 <ul class="simple">
-<li><p>基本性质：线性码（Linear Codes）</p></li>
+<li><p>基本性质：线性陪集码（Linear Coset Codes）</p></li>
 <li><p>理论基础：信道极化现象（Channel Polarization）</p></li>
 <li><p>码字生成：指定了一个特定极化码的冻结位（Frozen Bits），和指定了这个特定极化码中各个不同码字的信息位（Information Bits）</p></li>
 </ul>
 <p><strong>为什么要构造极化码</strong>：</p>
-<p>极化码的最优性，针对的是这一类码而言，并非对某一个码而言的。换句话说，对任意一个符合Shannon理论的场景而言，在极化码这一类码中，都存在一个满足要求的码。这个码是一定存在的，但并不总是容易得到的。</p>
-<p>在实际场景下，不论什么码，译码错误概率总不会是严格的<span class="math notranslate nohighlight">\(0\)</span>。一般来讲，码长越长、码率越低的极化码纠错能力越强，但过长的码长会带来巨大的计算复杂度，而过低的码率则会带来较差的信息承载能力。因此，在使用前，应当依据具体应用需求，权衡冻结位和信息位的选取，从而获得一个可用的极化码。</p>
+<p>极化码的最优性针对的是这一类码而言，并非对某一个码而言的，更直观地讲，是对任意一个满足信道编码定理的配置而言，在极化码这一类码中，总存在一个满足该配置要求的码。这个码是一定存在的，但问题和Shannon的随机编码一样：我们该怎么找到它呢。幸运的是，找到一个可用的极化码比找到一个可用的随机码要容易得多。</p>
+<p>此外，在实际场景下，不论什么码，译码错误概率总不会是严格的<span class="math notranslate nohighlight">\(0\)</span>。一般来讲，码长越长、码率越低的极化码纠错能力越强，但过长的码长会带来巨大的计算复杂度，而过低的码率则会带来较差的信息承载能力。因此，在使用前，应当依据具体应用需求，权衡冻结位和信息位的选取，从而获得一个合适的极化码。</p>
 </section>
 <hr class="docutils" />
 <section id="id2">
-<h2>2 构造算法<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<h2>2. 构造算法<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p><strong>目的</strong>：确定各个极化信道的可靠度。</p>
 <p><strong>已有方案</strong>：</p>
 <ol class="arabic simple">
@@ -413,7 +412,7 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>信道容量0.50[bit]
 </pre></div>
 </div>
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "2819c7da13e74ae787e084c5047f9eb9", "version_major": 2, "version_minor": 0}</script><img alt="../_images/ee9f3ccdde17023a8f16baaf5c034b76c62a81d38a14c51e557fcb42769656f7.png" src="../_images/ee9f3ccdde17023a8f16baaf5c034b76c62a81d38a14c51e557fcb42769656f7.png" />
+<img alt="../_images/4a382bbc093e462134210d6196c29ac08163cc74ce045d06630b76528990280e.png" src="../_images/4a382bbc093e462134210d6196c29ac08163cc74ce045d06630b76528990280e.png" />
 </div>
 </div>
 <p>在码长有限的实际场景下，并不是只要编码码率低于信道容量，就可以实现无错误通信。事实上，从上图不难看出，短码长下极化码的性能还是很差的。虽然这一定程度上跟我们所采用了非最优的BEC算法有关，但即便采用最优构造法，性能也不会好太多。</p>
@@ -529,8 +528,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v-s">1 理论 v.s. 实践</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2 构造算法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v-s">1. 理论 v.s. 实践</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2. 构造算法</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bec">3. BEC构造法</a></li>
 </ul>
   </nav></div>
