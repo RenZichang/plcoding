@@ -59,10 +59,10 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '02_Basics/01_standardsc';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '02_Basics/01_standard_sc';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="二、信道极化现象" href="02_polarization.html" />
+    <link rel="next" title="二、极化现象" href="02_polarization.html" />
     <link rel="prev" title="第二章：极化码基础" href="00_index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -191,16 +191,14 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="00_index.html">第二章：极化码基础</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">一、标准SC译码</a></li>
-<li class="toctree-l2"><a class="reference internal" href="02_polarization.html">二、信道极化现象</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03_polarcoding.html">三、极化编码技术</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04_decoding.html">四、译码</a></li>
-<li class="toctree-l2"><a class="reference internal" href="05_construction.html">五、构造</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_polarization.html">二、极化现象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_polar_codes.html">三、极化码</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../03_Advanced/01_monotone.html">一、单调链极化码</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../03_Advanced/02_source.html">二、信源极化码</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/03_scldecoding.html">三、SCL译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/03_scl_decoding.html">三、SCL译码</a></li>
 </ul>
 </details></li>
 </ul>
@@ -257,7 +255,7 @@
       
       
       
-      <li><a href="../_sources/02_Basics/01_standardsc.ipynb" target="_blank"
+      <li><a href="../_sources/02_Basics/01_standard_sc.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -361,9 +359,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2. 连续消除译码方案</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.1 极化信道</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2 译码二叉树</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.3 连续消除译码</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.4 误块率最优性</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.5 算法复杂度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.3 连续消除规则</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.4 算法复杂度</a></li>
 </ul>
 </li>
 </ul>
@@ -498,6 +495,7 @@ document.write(`
 <p>在已知<span class="math notranslate nohighlight">\(U_1=u_1\)</span>的情况下，<span class="math notranslate nohighlight">\(U_2\)</span>对应的概率分布序列<span class="math notranslate nohighlight">\(\mathcal{P}^{U_2}_{0:q-1}\)</span>中每个元素的计算公式为：</p>
 <div class="math notranslate nohighlight">
 \[\mathcal{P}^{U_2}_k=\frac{\mathcal{P}^{X_1}_{u_1+k}\cdot\mathcal{P}^{X_2}_k}{\sum_{i=0}^{q-1}\mathcal{P}^{X_1}_{u_1+i}\cdot\mathcal{P}^{X_2}_i}\]</div>
+<p>上面这两个式子同样适用于<span class="math notranslate nohighlight">\(q=2\)</span>的二进制情况，感兴趣的读者可以代入自行验证。</p>
 <blockquote>
 <div><p>这两个式子本质上分别是循环卷积和Hadamard积。</p>
 </div></blockquote>
@@ -532,7 +530,7 @@ document.write(`
 <p>不难发现按照这种方法我们可以求出任意<span class="math notranslate nohighlight">\(i=1,\ldots,N\)</span>的条件概率分布。</p>
 </section>
 <section id="id8">
-<h3>2.3 连续消除译码<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<h3>2.3 连续消除规则<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <p>回到极化码的译码问题中来，接收端的任务是根据信道输出结果<span class="math notranslate nohighlight">\(Y_{1:N}=y_{1:N}\)</span>，对随机变量<span class="math notranslate nohighlight">\(U_{1:N}\)</span>的取值进行估计。Arikan提出了一种简单直接的做法，就是串行地从<span class="math notranslate nohighlight">\(i=1\)</span>到<span class="math notranslate nohighlight">\(N\)</span>，依次计算条件概率分布：</p>
 <div class="math notranslate nohighlight">
 \[\Pr(U_i|Y_{1:N}=y_{1:N},U_{1:i-1}=\hat{u}_{1:i-1})\]</div>
@@ -542,16 +540,7 @@ document.write(`
 <p>回顾之前的最小和SC译码章节，其中介绍到、但并未详细解释的特殊译码顺序，就来源于此串行译码过程。</p>
 </section>
 <section id="id9">
-<h3>2.4 误块率最优性<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
-<p>仔细观察SC译码算法中的条件部分，可以发现并不是我们之前进行Bayes推理时所采用的随机变量<span class="math notranslate nohighlight">\(U_{1:i-1}\)</span>的真正取值<span class="math notranslate nohighlight">\(u_{1:i-1}\)</span>，而是判决结果<span class="math notranslate nohighlight">\(\hat{u}_{1:i-1}\)</span>。这个问题是不可避免的，因为译码器不可能在译码成功前，就准确地知道<span class="math notranslate nohighlight">\(u_{1:N}\)</span>是多少，否则它就没有必要译码了。那这样自然会带给我们一个疑问：在条件部分填充不准确的估计值，是否会影响译码正确率呢？</p>
-<p>为了解释这个问题，我们引入一个概念：Genie-aided译码。它指的是我们通过某种神奇的手段，在译码过程中就使用真正的取值<span class="math notranslate nohighlight">\(u_{1:i-1}\)</span>，显然这种做法才是我们最开始所期望的做法，并且它应该具有良好的性能。但接下来我们将指出，Genie-aided译码的误块率（Blcok Error Rate，BLER）与SC译码的误块率是相等的。</p>
-<p>证明过程十分简单，记Genie-aided译码的第<span class="math notranslate nohighlight">\(i\)</span>步的判决错误率为<span class="math notranslate nohighlight">\(e_i\)</span>，那么对所有<span class="math notranslate nohighlight">\(N\)</span>个随机变量<span class="math notranslate nohighlight">\(U_{1:N}\)</span>进行判决后，全部正确的概率为：<span class="math notranslate nohighlight">\(\prod_{i=1}^N (1-e_i)\)</span>。然后再考虑SC译码，若某次译码成功没有发生错误，说明条件部分总是正确的，说明此时与Genie-aided译码每一步所使用的条件概率分布都相同，全部判决正确的概率也为<span class="math notranslate nohighlight">\(\prod_{i=1}^N (1-e_i)\)</span>，两者相等。</p>
-<blockquote>
-<div><p>Genie-aided译码与SC译码误比特率并不相等，而误块率相等则是因为必须保证所有比特都不出错才代表没有出现误块。</p>
-</div></blockquote>
-</section>
-<section id="id10">
-<h3>2.5 算法复杂度<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<h3>2.4 算法复杂度<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <p>注意到，如果单独考虑每一次的运算，复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>；该操作要执行<span class="math notranslate nohighlight">\(N\)</span>次，因此总复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N^2\log{N})\)</span>。但实际上由于计算是从<span class="math notranslate nohighlight">\(i=1\)</span>串行地执行到<span class="math notranslate nohighlight">\(N\)</span>的，在相邻两步之间存在一些可以共享的信息。如图所示：</p>
 <p><img alt="SC译码的优化" src="../_images/complexity.jpg" /></p>
 <p>不难注意到每一条有向边最多更新三次，因此总运算复杂度仍为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>。</p>
@@ -604,7 +593,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">二、信道极化现象</p>
+        <p class="prev-next-title">二、极化现象</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -634,9 +623,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2. 连续消除译码方案</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.1 极化信道</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2 译码二叉树</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.3 连续消除译码</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.4 误块率最优性</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.5 算法复杂度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.3 连续消除规则</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.4 算法复杂度</a></li>
 </ul>
 </li>
 </ul>

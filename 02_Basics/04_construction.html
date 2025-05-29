@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>三、极化编码技术 &#8212; Plcoding用户手册</title>
+    <title>五、构造算法 &#8212; Plcoding用户手册</title>
   
   
   
@@ -57,11 +57,9 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '02_Basics/03_polarcoding';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '02_Basics/04_construction';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="四、译码" href="04_decoding.html" />
-    <link rel="prev" title="二、信道极化现象" href="02_polarization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -124,6 +122,8 @@
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -179,7 +179,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../01_Introduction/00_index.html">第一章：极化码简介</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../01_Introduction/01_what.html">一、什么是极化码？</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../01_Introduction/02_construct.html">二、如何构造极化码？</a></li>
@@ -187,18 +187,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../01_Introduction/04_decode.html">四、如何译码？</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_index.html">第二章：极化码基础</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="01_standardsc.html">一、标准SC译码</a></li>
-<li class="toctree-l2"><a class="reference internal" href="02_polarization.html">二、信道极化现象</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">三、极化编码技术</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04_decoding.html">四、译码</a></li>
-<li class="toctree-l2"><a class="reference internal" href="05_construction.html">五、构造</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="00_index.html">第二章：极化码基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01_standard_sc.html">一、标准SC译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_polarization.html">二、极化现象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_polar_codes.html">三、极化码</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../03_Advanced/01_monotone.html">一、单调链极化码</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../03_Advanced/02_source.html">二、信源极化码</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/03_scldecoding.html">三、SCL译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/03_scl_decoding.html">三、SCL译码</a></li>
 </ul>
 </details></li>
 </ul>
@@ -255,7 +253,7 @@
       
       
       
-      <li><a href="../_sources/02_Basics/03_polarcoding.ipynb" target="_blank"
+      <li><a href="../_sources/02_Basics/04_construction.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -339,7 +337,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>三、极化编码技术</h1>
+    <h1>五、构造算法</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -349,10 +347,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polarization-polar-coding">1. Polarization 与 Polar Coding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2. 极化速率</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3. 非二进制极化码</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4. 其他形式的极化码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo">1. Monte-Carlo构造法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#density-evolution">2. Density Evolution构造法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3. 启发式构造法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4. 开放性问题</a></li>
 </ul>
             </nav>
         </div>
@@ -365,32 +363,32 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1>三、极化编码技术<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<section id="polarization-polar-coding">
-<h2>1. Polarization 与 Polar Coding<a class="headerlink" href="#polarization-polar-coding" title="Link to this heading">#</a></h2>
+<h1>五、构造算法<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="monte-carlo">
+<h2>1. Monte-Carlo构造法<a class="headerlink" href="#monte-carlo" title="Link to this heading">#</a></h2>
 <blockquote>
-<div><p>指出极化现象与极化编码并非同一事物，简单介绍极化编码的原思想与经过发展后的思想</p>
+<div><p>简单介绍Arikan给出的最简单方案</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="density-evolution">
+<h2>2. Density Evolution构造法<a class="headerlink" href="#density-evolution" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p>介绍DE构造法</p>
 </div></blockquote>
 </section>
 <hr class="docutils" />
 <section id="id2">
-<h2>2. 极化速率<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<h2>3. 启发式构造法<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <blockquote>
-<div><p>介绍极化速率的概念，给出原极化码的性能分析</p>
+<div><p>介绍华为的极化重量、遗传算法等</p>
 </div></blockquote>
 </section>
 <hr class="docutils" />
 <section id="id3">
-<h2>3. 非二进制极化码<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<h2>4. 开放性问题<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <blockquote>
-<div><p>讲解非二进制极化码的编译码</p>
-</div></blockquote>
-</section>
-<hr class="docutils" />
-<section id="id4">
-<h2>4. 其他形式的极化码<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
-<blockquote>
-<div><p>介绍广义极化码、半冻结极化码、级联码、RM-Polar码等</p>
+<div><p>介绍一些开放性问题</p>
 </div></blockquote>
 </section>
 </section>
@@ -425,24 +423,6 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="02_polarization.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">二、信道极化现象</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="04_decoding.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">四、译码</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -459,10 +439,10 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polarization-polar-coding">1. Polarization 与 Polar Coding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2. 极化速率</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3. 非二进制极化码</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4. 其他形式的极化码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo">1. Monte-Carlo构造法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#density-evolution">2. Density Evolution构造法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3. 启发式构造法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4. 开放性问题</a></li>
 </ul>
   </nav></div>
 
