@@ -351,19 +351,19 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes">1. 二元极化核上的Bayes推理</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.1 两个关键问题</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1. 准备工作</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 两个关键问题</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arikan">1.2 Arikan的第一个译码函数</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.3 Arikan的第二个译码函数</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.4 非二进制推理问题</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.3 Arikan的第二个译码函数</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.4 非二进制推理问题</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. Arikan的连续消除算法</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.1 极化信道</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.2 极化二叉树上的Bayes推理</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.3 连续消除译码</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#genie-aided">2.4 Genie-aided译码与错误率分析</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.5 计算复杂度</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2. 连续消除译码方案</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.1 极化信道</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2 译码二叉树</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.3 连续消除译码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.4 误块率最优性</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.5 算法复杂度</a></li>
 </ul>
 </li>
 </ul>
@@ -379,8 +379,8 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="sc">
 <h1>一、标准SC译码<a class="headerlink" href="#sc" title="Link to this heading">#</a></h1>
-<section id="bayes">
-<h2>1. 二元极化核上的Bayes推理<a class="headerlink" href="#bayes" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h2>1. 准备工作<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>经过之前的讲解，我们现在应该已经大概建立起关于极化码的印象，那就是它们是一类建立在二元极化核：</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\mathbf{G}_2=\begin{pmatrix}1&amp;0\\1&amp;1\end{pmatrix}\end{split}\]</div>
@@ -388,8 +388,8 @@ document.write(`
 <blockquote>
 <div><p>我们将使用大写字母表示<strong>随机变量</strong>（Random Variable），小写字母表示该随机变量的<strong>实现</strong>（Realization）。前者是一种数学上的抽象概念，而后者则是它在每次实验中对外表现出的具体状态。</p>
 </div></blockquote>
-<section id="id1">
-<h3>1.1 两个关键问题<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<section id="id2">
+<h3>1.1 两个关键问题<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p><img alt="码长为2的极化码" src="../_images/len2.png" /></p>
 <p>上图展示了码长为2的极化码，其中随机变量<span class="math notranslate nohighlight">\(X_1,X_2\)</span>与随机变量<span class="math notranslate nohighlight">\(U_1,U_2\)</span>之间存在确定映射<span class="math notranslate nohighlight">\(\mathbf{G}_2\)</span>，与随机变量<span class="math notranslate nohighlight">\(Y_1,Y_2\)</span>之间存在随机映射<span class="math notranslate nohighlight">\(W\)</span>。考虑到码长为2的极化码实际上是任意码长极化码的基本单元，为了能够讨论更一般性的问题，我们对这个结构进行更一般化的阐释：</p>
 <p><img alt="二元极化核" src="../_images/generalized.jpg" /></p>
@@ -450,15 +450,15 @@ document.write(`
 <img alt="../_images/73c021e29e462d060a8067d8b3257e266aa63f47fe1a59db14f8d3206946dc8c.png" src="../_images/73c021e29e462d060a8067d8b3257e266aa63f47fe1a59db14f8d3206946dc8c.png" />
 </div>
 </div>
-<p>从上图可以看出，<span class="math notranslate nohighlight">\(\tanh(\cdot)\)</span>是奇函数，并且在<span class="math notranslate nohighlight">\(x\)</span>的绝对值较小时有<span class="math notranslate nohighlight">\(\tanh(x)\approx x\)</span>，在<span class="math notranslate nohighlight">\(x\)</span>的绝对值较大时有<span class="math notranslate nohighlight">\(\tanh(x)\approx\plusmn 1\)</span>，这解释了为什么在之前的最小和译码算法中可以使用：</p>
+<p>从上图可以看出，<span class="math notranslate nohighlight">\(\tanh(\cdot)\)</span>是奇函数，并且在<span class="math notranslate nohighlight">\(x\)</span>的绝对值较小时有<span class="math notranslate nohighlight">\(\tanh(x)\approx x\)</span>，在<span class="math notranslate nohighlight">\(x\)</span>的绝对值较大时有<span class="math notranslate nohighlight">\(|\tanh(x)| \approx 1\)</span>，这解释了为什么在之前的最小和译码算法中可以使用：</p>
 <div class="math notranslate nohighlight">
 \[L^U_1 = \text{sign}(L^X_1) \times \text{sign}(L^X_2) \times \min \left\{|L^X_1|, |L^X_2|\right\}\]</div>
 <p>来近似计算：</p>
 <div class="math notranslate nohighlight">
 \[L^U_1 = 2\cdot\tanh^{-1}(\tanh(L^X_1/2)\cdot\tanh(L^X_2/2))\]</div>
 </section>
-<section id="id2">
-<h3>1.3 Arikan的第二个译码函数<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<section id="id3">
+<h3>1.3 Arikan的第二个译码函数<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <p>接下来我们求解第二个问题，其推理过程如图所示：</p>
 <p><img alt="第一个问题" src="../_images/problem2.jpg" /></p>
 <ol class="arabic simple">
@@ -473,8 +473,8 @@ document.write(`
 <div><p>推荐阅读：Bayes推理问题与<a class="reference external" href="http://www.vision.jhu.edu/reading_group/TR2001-22.pdf">置信度传播算法</a>。纠错码领域经典的迭代式BP译码算法是对它们的近似实现。</p>
 </div></blockquote>
 </section>
-<section id="id3">
-<h3>1.4 非二进制推理问题<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h3>1.4 非二进制推理问题<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p>Arikan的经典译码算法是基于二进制输入信道的，尽管在实际的通信系统中很少使用非二进制纠错码，但如果是出于理论研究的目的，极化码对非二进制场景也是具有最优性的，不过需要使用特殊的极化矩阵，否则不一定会发生信道极化，或者信道只会出现“部分极化”。</p>
 <blockquote>
 <div><p>实际通信系统会通过Gray编码建立比特和符号之间的映射，但该方案破坏了对称性，会带来性能损失。</p>
@@ -504,11 +504,11 @@ document.write(`
 </section>
 </section>
 <hr class="docutils" />
-<section id="id4">
-<h2>2. Arikan的连续消除算法<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
-<p>在上文中，我们介绍了二元极化核上的Bayes推理问题以及它们的解法。作为SC译码算法的基本单元，它们是我们建立对极化码更深层次认知的关键，请务必掌握、透彻理解。接下来，我们将以它们为基础，给出Arikan的标准SC译码算法。</p>
 <section id="id5">
-<h3>2.1 极化信道<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<h2>2. 连续消除译码方案<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>在上文中，我们介绍了二元极化核上的Bayes推理问题以及它们的解法。作为SC译码算法的基本单元，它们是我们建立对极化码更深层次认知的关键，请务必掌握、透彻理解。接下来，我们将以它们为基础，给出Arikan的标准SC译码算法。</p>
+<section id="id6">
+<h3>2.1 极化信道<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <p>对于一个码长为<span class="math notranslate nohighlight">\(N=2^n\)</span>的极化码，设<span class="math notranslate nohighlight">\(X_{1:N}=U_{1:N}\cdot\mathbf{G}_N\cdot\mathbf{B}_N\)</span>，其中<span class="math notranslate nohighlight">\(\mathbf{B}_N\)</span>是尺寸为<span class="math notranslate nohighlight">\(N\)</span>的比特反转置换矩阵。随机序列<span class="math notranslate nohighlight">\(X_{1:N}\)</span>经过随机映射得到一个新的随机序列<span class="math notranslate nohighlight">\(Y_{1:N}\)</span>（实际上就是经过<span class="math notranslate nohighlight">\(N\)</span>个简单信道进行传输）。Arikan考虑的是如下问题：</p>
 <p><strong>已知<span class="math notranslate nohighlight">\(Y_{1:N}=y_{1:N}\)</span>，以及<span class="math notranslate nohighlight">\(U_{1:i-1}=u_{1:i-1}\)</span>的情况下，求随机变量<span class="math notranslate nohighlight">\(U_i\)</span>的条件概率分布。</strong></p>
 <p>从数学上来讲，任意两个（或两组）随机变量之间的条件概率分布，都可以被视作一个信道。因此，我们可以考虑这样一个特殊的信道：</p>
@@ -520,8 +520,8 @@ document.write(`
 </div></blockquote>
 <p>Arikan在他的工作中证明了，随着码长<span class="math notranslate nohighlight">\(N\to+\infty\)</span>，这<span class="math notranslate nohighlight">\(N\)</span>个极化信道的容量<span class="math notranslate nohighlight">\(I(Y_{1:N},U_{1:i-1};U_i)\)</span>要么接近<span class="math notranslate nohighlight">\(1\)</span>要么接近<span class="math notranslate nohighlight">\(0\)</span>，也即所谓的极化。这个现象将在下一节深入讨论，在本小节我们所需要关注的是如何求这些信道的转移概率。</p>
 </section>
-<section id="id6">
-<h3>2.2 极化二叉树上的Bayes推理<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<section id="id7">
+<h3>2.2 译码二叉树<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <p>对于第<span class="math notranslate nohighlight">\(i\)</span>个极化信道<span class="math notranslate nohighlight">\(W^{(i)}_N(Y_{1:N},U_{1:i-1}|U_i)\)</span>而言，直接求其转移概率矩阵是不可能的，因为这个矩阵形状为<span class="math notranslate nohighlight">\(2\times 2^{N+i-1}\)</span>，所有可能的输出情况数随码长<span class="math notranslate nohighlight">\(N\)</span>和索引<span class="math notranslate nohighlight">\(i\)</span>指数级增长。尽管无法求出其所有列，但我们可以准确地求出指定的某一列，这可以通过对极化变换<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>进行Bayes推理得到，所采用的算法是置信度传播算法，其计算复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>。</p>
 <p>根据极化码的递归结构，我们可以从右到左，将第<span class="math notranslate nohighlight">\(i\)</span>层中间变量拆分为<span class="math notranslate nohighlight">\(2^i\)</span>个大小为<span class="math notranslate nohighlight">\(N/2^i\)</span>的树节点，从而构成一颗二叉树，如下图所示：</p>
 <p><img alt="极化二叉树" src="../_images/polar_tree.jpg" /></p>
@@ -531,8 +531,8 @@ document.write(`
 <p><img alt="推理示例图" src="../_images/some_inference.jpg" /></p>
 <p>不难发现按照这种方法我们可以求出任意<span class="math notranslate nohighlight">\(i=1,\ldots,N\)</span>的条件概率分布。</p>
 </section>
-<section id="id7">
-<h3>2.3 连续消除译码<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<section id="id8">
+<h3>2.3 连续消除译码<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <p>回到极化码的译码问题中来，接收端的任务是根据信道输出结果<span class="math notranslate nohighlight">\(Y_{1:N}=y_{1:N}\)</span>，对随机变量<span class="math notranslate nohighlight">\(U_{1:N}\)</span>的取值进行估计。Arikan提出了一种简单直接的做法，就是串行地从<span class="math notranslate nohighlight">\(i=1\)</span>到<span class="math notranslate nohighlight">\(N\)</span>，依次计算条件概率分布：</p>
 <div class="math notranslate nohighlight">
 \[\Pr(U_i|Y_{1:N}=y_{1:N},U_{1:i-1}=\hat{u}_{1:i-1})\]</div>
@@ -541,8 +541,8 @@ document.write(`
 \[\hat{u}_i \gets \mathop{\arg\max}\limits_{k}\Pr(U_i|Y_{1:N}=y_{1:N},U_{1:i-1}=\hat{u}_{1:i-1})\]</div>
 <p>回顾之前的最小和SC译码章节，其中介绍到、但并未详细解释的特殊译码顺序，就来源于此串行译码过程。</p>
 </section>
-<section id="genie-aided">
-<h3>2.4 Genie-aided译码与错误率分析<a class="headerlink" href="#genie-aided" title="Link to this heading">#</a></h3>
+<section id="id9">
+<h3>2.4 误块率最优性<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <p>仔细观察SC译码算法中的条件部分，可以发现并不是我们之前进行Bayes推理时所采用的随机变量<span class="math notranslate nohighlight">\(U_{1:i-1}\)</span>的真正取值<span class="math notranslate nohighlight">\(u_{1:i-1}\)</span>，而是判决结果<span class="math notranslate nohighlight">\(\hat{u}_{1:i-1}\)</span>。这个问题是不可避免的，因为译码器不可能在译码成功前，就准确地知道<span class="math notranslate nohighlight">\(u_{1:N}\)</span>是多少，否则它就没有必要译码了。那这样自然会带给我们一个疑问：在条件部分填充不准确的估计值，是否会影响译码正确率呢？</p>
 <p>为了解释这个问题，我们引入一个概念：Genie-aided译码。它指的是我们通过某种神奇的手段，在译码过程中就使用真正的取值<span class="math notranslate nohighlight">\(u_{1:i-1}\)</span>，显然这种做法才是我们最开始所期望的做法，并且它应该具有良好的性能。但接下来我们将指出，Genie-aided译码的误块率（Blcok Error Rate，BLER）与SC译码的误块率是相等的。</p>
 <p>证明过程十分简单，记Genie-aided译码的第<span class="math notranslate nohighlight">\(i\)</span>步的判决错误率为<span class="math notranslate nohighlight">\(e_i\)</span>，那么对所有<span class="math notranslate nohighlight">\(N\)</span>个随机变量<span class="math notranslate nohighlight">\(U_{1:N}\)</span>进行判决后，全部正确的概率为：<span class="math notranslate nohighlight">\(\prod_{i=1}^N (1-e_i)\)</span>。然后再考虑SC译码，若某次译码成功没有发生错误，说明条件部分总是正确的，说明此时与Genie-aided译码每一步所使用的条件概率分布都相同，全部判决正确的概率也为<span class="math notranslate nohighlight">\(\prod_{i=1}^N (1-e_i)\)</span>，两者相等。</p>
@@ -550,11 +550,12 @@ document.write(`
 <div><p>Genie-aided译码与SC译码误比特率并不相等，而误块率相等则是因为必须保证所有比特都不出错才代表没有出现误块。</p>
 </div></blockquote>
 </section>
-<section id="id8">
-<h3>2.5 计算复杂度<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
-<p>注意到，如果单独考虑每一次的运算，计算复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>；该操作要执行<span class="math notranslate nohighlight">\(N\)</span>次，因此总计算复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N^2\log{N})\)</span>。但实际上由于计算是从<span class="math notranslate nohighlight">\(i=1\)</span>串行地执行到<span class="math notranslate nohighlight">\(N\)</span>的，在相邻两步之间存在一些可以共享的信息。如图所示：</p>
+<section id="id10">
+<h3>2.5 算法复杂度<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>注意到，如果单独考虑每一次的运算，复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>；该操作要执行<span class="math notranslate nohighlight">\(N\)</span>次，因此总复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N^2\log{N})\)</span>。但实际上由于计算是从<span class="math notranslate nohighlight">\(i=1\)</span>串行地执行到<span class="math notranslate nohighlight">\(N\)</span>的，在相邻两步之间存在一些可以共享的信息。如图所示：</p>
 <p><img alt="SC译码的优化" src="../_images/complexity.jpg" /></p>
-<p>不难注意到每一条有向边总共会更新两次，因此总运算复杂度仍为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>。</p>
+<p>不难注意到每一条有向边最多更新三次，因此总运算复杂度仍为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>。</p>
+<p>关于算法的空间复杂度，一般来讲我们认为是<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>，不过如果加以深度优化，在剔除掉后续译码中再也用不到的信息之后空间复杂度可以降低至<span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span>。</p>
 </section>
 </section>
 </section>
@@ -623,19 +624,19 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes">1. 二元极化核上的Bayes推理</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.1 两个关键问题</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1. 准备工作</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 两个关键问题</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arikan">1.2 Arikan的第一个译码函数</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.3 Arikan的第二个译码函数</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.4 非二进制推理问题</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.3 Arikan的第二个译码函数</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.4 非二进制推理问题</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. Arikan的连续消除算法</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.1 极化信道</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.2 极化二叉树上的Bayes推理</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.3 连续消除译码</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#genie-aided">2.4 Genie-aided译码与错误率分析</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.5 计算复杂度</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2. 连续消除译码方案</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.1 极化信道</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2 译码二叉树</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.3 连续消除译码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.4 误块率最优性</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.5 算法复杂度</a></li>
 </ul>
 </li>
 </ul>
