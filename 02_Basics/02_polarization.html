@@ -193,6 +193,7 @@
 <li class="toctree-l2"><a class="reference internal" href="01_standard_sc.html">一、标准SC译码</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">二、极化现象</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03_polar_codes.html">三、极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_construction.html">四、构造算法</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -492,7 +493,7 @@ document.write(`
 </section>
 <section id="id5">
 <h3>1.3 信道极化定理<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
-<p>对所有的二进制输入离散无记忆对称信道<span class="math notranslate nohighlight">\(W\)</span>而言，极化信道<span class="math notranslate nohighlight">\(W^{(i)}_N\)</span>按照如下规则发生极化：任意给定<span class="math notranslate nohighlight">\(\delta\in(0,1)\)</span>，当<span class="math notranslate nohighlight">\(N\)</span>按照<span class="math notranslate nohighlight">\(2\)</span>的整数次幂趋于无穷时，满足<span class="math notranslate nohighlight">\(I(W_N^{(i)})\in(1-\delta,1]\)</span>的索引<span class="math notranslate nohighlight">\(i\)</span>的占比趋近于<span class="math notranslate nohighlight">\(I(W)\)</span>，满足<span class="math notranslate nohighlight">\(I(W_N^{(i)})\in[0,\delta)\)</span>的索引<span class="math notranslate nohighlight">\(i\)</span>的占比趋近于<span class="math notranslate nohighlight">\(1-I(W)\)</span>。</p>
+<p>对所有的二进制输入离散无记忆信道（B-DMC）<span class="math notranslate nohighlight">\(W\)</span>而言，极化信道<span class="math notranslate nohighlight">\(W^{(i)}_N\)</span>按照如下规则发生极化：任意给定<span class="math notranslate nohighlight">\(\delta\in(0,1)\)</span>，当<span class="math notranslate nohighlight">\(N\)</span>按照<span class="math notranslate nohighlight">\(2\)</span>的整数次幂趋于无穷时，满足<span class="math notranslate nohighlight">\(I(W_N^{(i)})\in(1-\delta,1]\)</span>的索引<span class="math notranslate nohighlight">\(i\)</span>的占比趋近于<span class="math notranslate nohighlight">\(I(W)\)</span>，满足<span class="math notranslate nohighlight">\(I(W_N^{(i)})\in[0,\delta)\)</span>的索引<span class="math notranslate nohighlight">\(i\)</span>的占比趋近于<span class="math notranslate nohighlight">\(1-I(W)\)</span>。</p>
 <p>这个定理可以粗略理解为，链式法则等式中，那些特殊形式的互信息要么是0要么是1，而位于0和1之间的项虽然也存在，但随着码长趋于无穷而占比趋于0。</p>
 <blockquote>
 <div><p>占比趋于0，不代表数量趋于0。</p>
@@ -512,16 +513,84 @@ document.write(`
 <blockquote>
 <div><p>高尔顿板，将小球从顶层小口投入，在每个拐点处均匀随机向左向右下落，最终形成高斯分布包络线。是一种用于教学演示的常用装置。</p>
 </div></blockquote>
+<p>对于一般意义上的B-DMC而言，极化二叉树各节点的值是难以计算的，信道容量<span class="math notranslate nohighlight">\(I(W)\)</span>并没有一个通用的简单递归式，不过BEC信道是一个例外。经过简单推导可以知道，若<span class="math notranslate nohighlight">\(W\)</span>的擦除概率为<span class="math notranslate nohighlight">\(e\)</span>，则分裂出的两个新信道的容量分别为<span class="math notranslate nohighlight">\(e^2\)</span>和<span class="math notranslate nohighlight">\(2e-e^2\)</span>。我们以<span class="math notranslate nohighlight">\(e=0.5\)</span>为例，简单绘制一下该随机过程在前几步的演化情况：</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 演化函数</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">evolute</span><span class="p">(</span><span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">seqs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">seqs</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">seqs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">seqs</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">seqs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">seqs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 初始化参数</span>
+<span class="n">e</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">10</span>
+<span class="n">Ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,))</span>
+<span class="n">Ws</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># 生成所有可能的随机过程</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">evolute</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Ws</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Ws</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a291fc7bd5e66ec2e8436e9a5ce71a382e9aa8c6666a738e6c4acaeb1495f0cd.png" src="../_images/a291fc7bd5e66ec2e8436e9a5ce71a382e9aa8c6666a738e6c4acaeb1495f0cd.png" />
+</div>
+</div>
+<p>从上图可以粗略看出，随着步数逐渐增多，靠近边界上的路径密度越来越高。为了在更大步数下验证这个猜想，我们采用Monte-Carlo法均匀随机选择几条路径进行绘制：</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">20</span>
+<span class="n">Ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,))</span>
+<span class="n">Ws</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># 均匀随机选择100条可能的路径</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">n</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,)):</span>
+    <span class="n">evolute</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Ws</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Ws</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6a87a07804060c7b38a0e842fd2f2c1f1398eec87f71f7ec3b04ce3e1002e682.png" src="../_images/6a87a07804060c7b38a0e842fd2f2c1f1398eec87f71f7ec3b04ce3e1002e682.png" />
+</div>
+</div>
+<p>仿真结果验证了我们的猜想，随着步数逐渐增加，几乎所有路径的“尾巴”最终都将贴近0或1。这其实是个很深刻的现象，下一小节我们将从数学上对它做出更严格的描述。</p>
 </section>
 <section id="id8">
 <h3>2.2 鞅论基础<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
-<p>极化二叉树所描述的随机过程，有一个关键的性质：在已知第<span class="math notranslate nohighlight">\(n\)</span>步的取值为<span class="math notranslate nohighlight">\(I(W_N^{(i)})\)</span>的条件下，第<span class="math notranslate nohighlight">\(n+1\)</span>步取值的条件期望就是<span class="math notranslate nohighlight">\(I(W_N^{(i)})\)</span>。在随机过程理论中，存在一类描述该行为的数学对象：鞅（Martingale）。</p>
+<p>极化二叉树所描述的随机过程，有一个关键的性质：在已知第<span class="math notranslate nohighlight">\(n\)</span>步的取值为<span class="math notranslate nohighlight">\(I(W_N^{(i)})\)</span>的条件下，第<span class="math notranslate nohighlight">\(n+1\)</span>步取值的条件期望就是<span class="math notranslate nohighlight">\(I(W_N^{(i)})\)</span>。在随机过程理论中，具有这种特性的随机过程被称为：鞅（Martingale）。</p>
 <p><strong>鞅</strong>：设<span class="math notranslate nohighlight">\(\{X_n,n\geq 0\}\)</span>和<span class="math notranslate nohighlight">\(\{Y_n,n\geq 0\}\)</span>是随机过程，对任意的<span class="math notranslate nohighlight">\(n\geq 0\)</span>，<span class="math notranslate nohighlight">\(X_n\)</span>是<span class="math notranslate nohighlight">\(Y_0,\ldots,Y_n\)</span>的函数，<span class="math notranslate nohighlight">\(E|X_n|&lt;\infty\)</span>，且：</p>
 <div class="math notranslate nohighlight">
 \[E(X_{n+1}|Y_0,\ldots,Y_n)=X_n,\forall n\geq 0\]</div>
 <p>则称<span class="math notranslate nohighlight">\(\{X_n\}\)</span>是关于<span class="math notranslate nohighlight">\(\{Y_n\}\)</span>的鞅。</p>
 <blockquote>
 <div><p>“随机过程在某一步的条件期望”与“随机过程在某一步的数学期望”是两个不同的概念，条件期望是关于条件部分的函数，而数学期望等于条件期望关于条件部分的均值。</p>
+</div></blockquote>
+<p>上面关于鞅的定义至少还是能看懂的，但这种初级的措辞无法支撑更高级的应用。为了能看懂Arikan的证明过程，我们还需要在下面列出其他关键概念。</p>
+<blockquote>
+<div><p>本小节只是对基本概念的简单列举，如果有兴趣深入研究，可参考北大数科讲义：<a class="reference external" href="https://www.math.pku.edu.cn/teachers/lidf/course/stochproc/stochprocnotes/html/_book/">应用随机过程</a>。</p>
 </div></blockquote>
 <p><strong><span class="math notranslate nohighlight">\(\sigma\)</span>代数</strong>：设<span class="math notranslate nohighlight">\(\Omega\)</span>是一个样本空间（或任意一个非空集合），<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>是<span class="math notranslate nohighlight">\(\Omega\)</span>的某些子集组成的集合族，且满足如下特殊性质：</p>
 <ol class="arabic simple">
@@ -530,16 +599,13 @@ document.write(`
 <li><p>若<span class="math notranslate nohighlight">\(A_n\in\mathcal{F},n=1,2,\ldots\)</span>，则<span class="math notranslate nohighlight">\(\bigcup_n A_n\in\mathcal{F}\)</span>。</p></li>
 </ol>
 <p>则称<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>为<span class="math notranslate nohighlight">\(\Omega\)</span>上的一个<span class="math notranslate nohighlight">\(\sigma\)</span>代数，而<span class="math notranslate nohighlight">\((\Omega,\mathcal{F})\)</span>称为可测空间，<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>中的元素称为随机事件。</p>
-<p><strong><span class="math notranslate nohighlight">\(\sigma\)</span>代数流与适应列</strong>：设<span class="math notranslate nohighlight">\((\Omega,\mathcal{F},P)\)</span>是完备的概率空间，<span class="math notranslate nohighlight">\(\{\mathcal{F}_n,n=0,1,\ldots\}\)</span>是<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>内的一系列满足<span class="math notranslate nohighlight">\(\mathcal{F}_n\subset\mathcal{F}_{n+1}\)</span>的子<span class="math notranslate nohighlight">\(\sigma\)</span>代数，则称之为<span class="math notranslate nohighlight">\(\sigma\)</span>代数流。如果<span class="math notranslate nohighlight">\(\forall n\geq 0\)</span>，<span class="math notranslate nohighlight">\(X_n\)</span>是<span class="math notranslate nohighlight">\(\mathcal{F}_n\)</span>可测的，则称随机过程<span class="math notranslate nohighlight">\(\{X_n\}\)</span>为<span class="math notranslate nohighlight">\(\{\mathcal{F}_n\}\)</span>适应的。</p>
-<p><strong>鞅的另一个定义</strong>：设<span class="math notranslate nohighlight">\(\{\mathcal{F}_n,n\geq 0\}\)</span>是一个<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>中的<span class="math notranslate nohighlight">\(\sigma\)</span>代数流，如果随机过程<span class="math notranslate nohighlight">\(\{X_n,n\geq 0\}\)</span>是<span class="math notranslate nohighlight">\(\{\mathcal{F}_n\}\)</span>适应的，并且有：</p>
+<p><strong><span class="math notranslate nohighlight">\(\sigma\)</span>代数流与适应列</strong>：设<span class="math notranslate nohighlight">\((\Omega,\mathcal{F},P)\)</span>是完备的概率空间，若<span class="math notranslate nohighlight">\(\{\mathcal{F}_n,n=0,1,\ldots\}\)</span>是<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>内的一系列满足<span class="math notranslate nohighlight">\(\mathcal{F}_n\subset\mathcal{F}_{n+1}\)</span>的子<span class="math notranslate nohighlight">\(\sigma\)</span>代数，则称之为<span class="math notranslate nohighlight">\(\sigma\)</span>代数流。如果<span class="math notranslate nohighlight">\(\forall n\geq 0\)</span>，<span class="math notranslate nohighlight">\(X_n\)</span>是<span class="math notranslate nohighlight">\(\mathcal{F}_n\)</span>可测的，则称随机过程<span class="math notranslate nohighlight">\(\{X_n\}\)</span>为<span class="math notranslate nohighlight">\(\{\mathcal{F}_n\}\)</span>适应的。</p>
+<p><strong>鞅的另一个定义</strong>：设<span class="math notranslate nohighlight">\(\{\mathcal{F}_n,n\geq 0\}\)</span>是<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>中的一个<span class="math notranslate nohighlight">\(\sigma\)</span>代数流，如果随机过程<span class="math notranslate nohighlight">\(\{X_n,n\geq 0\}\)</span>是<span class="math notranslate nohighlight">\(\{\mathcal{F}_n\}\)</span>适应的，并且有：</p>
 <div class="math notranslate nohighlight">
 \[E|X_n|\leq\infty,E(X_{n+1}|\mathcal{F}_n)=X_n\]</div>
 <p>则称<span class="math notranslate nohighlight">\(\{X_n\}\)</span>是关于<span class="math notranslate nohighlight">\(\{\mathcal{F}_n\}\)</span>的鞅。</p>
 <p><strong>鞅收敛定理</strong>：设<span class="math notranslate nohighlight">\(\{X_n\}\)</span>是关于<span class="math notranslate nohighlight">\(\{\mathcal{F}_n\}\)</span>的鞅，并且存在常数<span class="math notranslate nohighlight">\(C\)</span>使得<span class="math notranslate nohighlight">\(E|X_n|\leq C\)</span>总成立，则当<span class="math notranslate nohighlight">\(n\to \infty\)</span>时，<span class="math notranslate nohighlight">\(\{X_n\}\)</span>几乎必然（almost surely, a.s.）收敛到一个随机变量<span class="math notranslate nohighlight">\(X_\infty\)</span>。</p>
-<p><strong>Borel <span class="math notranslate nohighlight">\(\sigma\)</span>代数</strong>：设<span class="math notranslate nohighlight">\(\Omega=\mathbb{R}\)</span>，有所有半无限区间<span class="math notranslate nohighlight">\((-\infty,x]\)</span>生成的<span class="math notranslate nohighlight">\(\sigma\)</span>代数，称为<span class="math notranslate nohighlight">\(\mathbb{R}\)</span>上的Borel <span class="math notranslate nohighlight">\(\sigma\)</span>代数，其中的元素称为Borel集合。</p>
-<blockquote>
-<div><p>本小节只是对基本概念的简单列举，如果有兴趣深入研究，可参考<a class="reference external" href="https://www.math.pku.edu.cn/teachers/lidf/course/stochproc/stochprocnotes/html/_book/">北大应用随机过程讲义</a>。</p>
-</div></blockquote>
+<p><strong>Borel <span class="math notranslate nohighlight">\(\sigma\)</span>代数</strong>：设<span class="math notranslate nohighlight">\(\Omega=\mathbb{R}\)</span>，由所有半无限区间<span class="math notranslate nohighlight">\((-\infty,x]\)</span>生成的<span class="math notranslate nohighlight">\(\sigma\)</span>代数，称为<span class="math notranslate nohighlight">\(\mathbb{R}\)</span>上的Borel <span class="math notranslate nohighlight">\(\sigma\)</span>代数，其中的元素称为Borel集合。</p>
 </section>
 </section>
 <hr class="docutils" />
@@ -554,10 +620,10 @@ document.write(`
 <div class="math notranslate nohighlight">
 \[I(W)\triangleq \sum_{y\in\mathcal{Y}}\sum_{x\in\mathcal{X}}\frac{1}{2}W(y|x)\log{\frac{W(y|x)}{\frac{1}{2}W(y|0)\frac{1}{2}W(y|1)}}\]</div>
 <p>对任意的二进制输入离散无记忆对称信道而言，有如下两个关系成立：</p>
-<div class="math notranslate nohighlight">
-\[I(W)\geq\log{\frac{2}{1+Z(W)}}\]</div>
-<div class="math notranslate nohighlight">
-\[I(W)\leq\sqrt{1-Z(W)^2}\]</div>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(I(W)\geq\log{\frac{2}{1+Z(W)}}\)</span>，这个式子保证了当<span class="math notranslate nohighlight">\(Z(W)\to 0\)</span>时，<span class="math notranslate nohighlight">\(I(W)\to 1\)</span>；</p></li>
+<li><p><span class="math notranslate nohighlight">\(I(W)\leq\sqrt{1-Z(W)^2}\)</span>，这个式子保证了当<span class="math notranslate nohighlight">\(Z(W)\to 1\)</span>时，<span class="math notranslate nohighlight">\(I(W)\to 0\)</span>。</p></li>
+</ol>
 </section>
 <section id="id9">
 <h3>3.2 证明过程<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
@@ -573,8 +639,7 @@ document.write(`
 <p>不过可惜的是，相比<span class="math notranslate nohighlight">\(I(W)\)</span>条件期望保持不变的优良特点，<span class="math notranslate nohighlight">\(Z(W)\)</span>在分裂后会变小（从而只能构造出一个上鞅，supermartingale）：</p>
 <div class="math notranslate nohighlight">
 \[Z(W')+Z(W'')\leq 2Z(W)\]</div>
-<p>解决方法是，根据<span class="math notranslate nohighlight">\(I(W)\)</span>和<span class="math notranslate nohighlight">\(Z(W)\)</span>之间的关系，分别使用<span class="math notranslate nohighlight">\(I(W)\)</span>证明收敛性、以及使用<span class="math notranslate nohighlight">\(Z(W)\)</span>证明收敛后的随机变量取值于<span class="math notranslate nohighlight">\(\{0,1\}\)</span>。</p>
-<p>Arikan的证明过程要点为：</p>
+<p>因此Arikan的论证思路是，根据<span class="math notranslate nohighlight">\(I(W)\)</span>和<span class="math notranslate nohighlight">\(Z(W)\)</span>之间的关系，分别使用<span class="math notranslate nohighlight">\(I(W)\)</span>证明收敛性、以及使用<span class="math notranslate nohighlight">\(Z(W)\)</span>证明收敛后的随机变量取值于<span class="math notranslate nohighlight">\(\{0,1\}\)</span>：</p>
 <ol class="arabic simple">
 <li><p>基于对称容量构造一个鞅<span class="math notranslate nohighlight">\(\{I_n\}\)</span>，根据鞅收敛定理知道，当<span class="math notranslate nohighlight">\(n\)</span>趋于无穷时，它几乎处处收敛到一个随机变量<span class="math notranslate nohighlight">\(I_\infty\)</span>；</p></li>
 <li><p>基于Bhattacharyya参数构造一个上鞅<span class="math notranslate nohighlight">\(\{Z_n\}\)</span>，根据鞅收敛定理知道，当<span class="math notranslate nohighlight">\(n\)</span>趋于无穷时，它几乎处处收敛到一个随机变量<span class="math notranslate nohighlight">\(Z_\infty\)</span>，且<span class="math notranslate nohighlight">\(Z_\infty\)</span>取值于集合<span class="math notranslate nohighlight">\(\{0,1\}\)</span>；</p></li>
@@ -582,6 +647,7 @@ document.write(`
 </ol>
 <p>这一过程在原文中为：</p>
 <p><img alt="Arikan的证明过程" src="../_images/arikan_proof.png" /></p>
+<p>想要了解更多证明细节，请直接阅读<a class="reference external" href="https://arxiv.org/abs/0807.3917">原文</a>，任何第三方资料都没有原文更权威。</p>
 </section>
 </section>
 </section>

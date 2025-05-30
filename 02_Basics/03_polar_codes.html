@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '02_Basics/03_polar_codes';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="第三章：极化码进阶" href="../03_Advanced/00_index.html" />
+    <link rel="next" title="五、构造算法" href="04_construction.html" />
     <link rel="prev" title="二、极化现象" href="02_polarization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -193,6 +193,7 @@
 <li class="toctree-l2"><a class="reference internal" href="01_standard_sc.html">一、标准SC译码</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02_polarization.html">二、极化现象</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">三、极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_construction.html">四、构造算法</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -349,7 +350,18 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.4 误块率最优性</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#not-to">1. 极化现象 <span class="math notranslate nohighlight">\(\not\to\)</span> 极化码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arikan">2. Arikan的极化码</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathbf-g-n">2.1 <span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>陪集码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2 连续消除译码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.3 译码错误率</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3. 小结</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sc">3.1 极化码与SC译码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.2 极化速率</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -363,20 +375,93 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>三、极化码<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<ol class="arabic simple">
-<li><p>极化现象与极化码之间的鸿沟，并不是简单的冻结两个字就能概括的；（有的极化现象不能用经典极化码，有的极化码找不到对应的极化现象）</p></li>
-<li><p>GN陪集码编码策略、冻结集的确定与冻结位的取值；</p></li>
-<li><p>与理论最优之间的差距；</p></li>
-<li><p>MAP的SCL与CRC-SCL。</p></li>
-</ol>
-<section id="id2">
-<h2>2.4 误块率最优性<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p>仔细观察SC译码算法中的条件部分，可以发现并不是我们之前进行Bayes推理时所采用的随机变量<span class="math notranslate nohighlight">\(U_{1:i-1}\)</span>的真正取值<span class="math notranslate nohighlight">\(u_{1:i-1}\)</span>，而是判决结果<span class="math notranslate nohighlight">\(\hat{u}_{1:i-1}\)</span>。这个问题是不可避免的，因为译码器不可能在译码成功前，就准确地知道<span class="math notranslate nohighlight">\(u_{1:N}\)</span>是多少，否则它就没有必要译码了。那这样自然会带给我们一个疑问：在条件部分填充不准确的估计值，是否会影响译码正确率呢？</p>
-<p>为了解释这个问题，我们引入一个概念：Genie-aided译码。它指的是我们通过某种神奇的手段，在译码过程中就使用真正的取值<span class="math notranslate nohighlight">\(u_{1:i-1}\)</span>，显然这种做法才是我们最开始所期望的做法，并且它应该具有良好的性能。但接下来我们将指出，Genie-aided译码的误块率（Blcok Error Rate，BLER）与SC译码的误块率是相等的。</p>
-<p>证明过程十分简单，记Genie-aided译码的第<span class="math notranslate nohighlight">\(i\)</span>步的判决错误率为<span class="math notranslate nohighlight">\(e_i\)</span>，那么对所有<span class="math notranslate nohighlight">\(N\)</span>个随机变量<span class="math notranslate nohighlight">\(U_{1:N}\)</span>进行判决后，全部正确的概率为：<span class="math notranslate nohighlight">\(\prod_{i=1}^N (1-e_i)\)</span>。然后再考虑SC译码，若某次译码成功没有发生错误，说明条件部分总是正确的，说明此时与Genie-aided译码每一步所使用的条件概率分布都相同，全部判决正确的概率也为<span class="math notranslate nohighlight">\(\prod_{i=1}^N (1-e_i)\)</span>，两者相等。</p>
+<section id="not-to">
+<h2>1. 极化现象 <span class="math notranslate nohighlight">\(\not\to\)</span> 极化码<a class="headerlink" href="#not-to" title="Link to this heading">#</a></h2>
+<p>至此我们已经介绍完了信道极化现象的所有基本内容，但如果浏览过Arikan的文章，可以发现原文中似乎还有大量其他内容我们尚未介绍。实际上，这部分是十分容易被萌新所忽视的、Arikan另一部分重要的工作内容：极化码（Polar Codes）。</p>
+<p>我们不妨设想一个场景，如果你在某天突然灵光一闪，根据互信息的链式法则发现了信道极化现象，而恰好你还上过金融课程，学过鞅论，就顺便给出了严格的理论证明，接下来你要做什么呢？一定是考虑怎么利用这种特殊的现象进行编译码。考虑到在严密的论证过程中，发生极化的信道是：</p>
+<div class="math notranslate nohighlight">
+\[W_N^{(i)}(Y_{1:N},U_{1:i-1}|U_i)\]</div>
+<p>所以一个很自然的做法是，计算所有极化信道的容量，然后在容量接近<span class="math notranslate nohighlight">\(0\)</span>的信道输入端填充已知比特，而在容量接近<span class="math notranslate nohighlight">\(1\)</span>的信道输入端填充消息比特。</p>
+<p>看起来，这种做法似乎就是最优利用策略，但其实忽略了一个非常关键的问题：接收端并不知道非冻结位的值，因此，除了第一个非冻结极化信道外，其他<strong>非冻结极化信道的输出端是部分未知的</strong>！你如何能够保证这种未知性不会影响这些信道的性能表现呢？如果只是证明了这些极化信道的容量趋于<span class="math notranslate nohighlight">\(1\)</span>，并不能说明它们在一部分输出端结果不可靠时仍具有高可靠性。这种不可靠性会累积吗？会传播吗？如果不会，为什么？如果会，有多大影响？这些都是需要经过严格论证的问题。</p>
 <blockquote>
-<div><p>Genie-aided译码与SC译码误比特率并不相等，而误块率相等则是因为必须保证所有比特都不出错才代表没有出现误块。</p>
+<div><p>Arikan的另一部分工作，是证明了极化码在SC译码算法下，达到了Shannon无失真容量界。</p>
 </div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="arikan">
+<h2>2. Arikan的极化码<a class="headerlink" href="#arikan" title="Link to this heading">#</a></h2>
+<section id="mathbf-g-n">
+<h3>2.1 <span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>陪集码<a class="headerlink" href="#mathbf-g-n" title="Link to this heading">#</a></h3>
+<p>我们将首先描述一类包含极化码（Polar codes）的分组码（Block codes），它们的码长被严格限制为<span class="math notranslate nohighlight">\(N=2^n\)</span>形式。对任意给定的码长<span class="math notranslate nohighlight">\(N\)</span>，它们都通过相似的方式进行编码：</p>
+<div class="math notranslate nohighlight">
+\[x_{1:N}=u_{1:N}\mathbf{G}_N\]</div>
+<p>对于任意一个集合<span class="math notranslate nohighlight">\(\mathcal{A}\subset\{1,\ldots,N\}\)</span>，我们可以将上式写成：</p>
+<div class="math notranslate nohighlight">
+\[x_{1:N}=u_{\mathcal{A}}\mathbf{G}_N(\mathcal{A})\oplus u_{\mathcal{A^c}}\mathbf{G}_N(\mathcal{A^c})\]</div>
+<p>其中<span class="math notranslate nohighlight">\(\mathbf{G}_N(\mathcal{A})\)</span>表示<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>中由集合<span class="math notranslate nohighlight">\(\mathcal{A}\)</span>所指示的行所构成的子矩阵。如果我们固定<span class="math notranslate nohighlight">\(\mathcal{A}\)</span>和<span class="math notranslate nohighlight">\(u_{\mathcal{A}^c}\)</span>，而令<span class="math notranslate nohighlight">\(u_{\mathcal{A}}\)</span>是自由的，那么我们就得到了一个从<span class="math notranslate nohighlight">\(u_{\mathcal{A}}\)</span>到<span class="math notranslate nohighlight">\(x_{1:N}\)</span>的映射，这个映射就是一个“陪集码（Coset-code）”：它是 以<span class="math notranslate nohighlight">\(\mathbf{G}_N(\mathcal{A})\)</span>为生成矩阵的线性分组码 的陪集，而这个陪集由固定的向量<span class="math notranslate nohighlight">\(u_{\mathcal{A^c}}\mathbf{G}_N(\mathcal{A^c})\)</span>所确定。基于这种定义，我们可以使用<span class="math notranslate nohighlight">\((N,K,\mathcal{A},u_{\mathcal{A}^c})\)</span>来确定一个陪集码，其中<span class="math notranslate nohighlight">\(N\)</span>为码长、<span class="math notranslate nohighlight">\(K\)</span>为集合<span class="math notranslate nohighlight">\(\mathcal{A}\)</span>的大小、集合<span class="math notranslate nohighlight">\(\mathcal{A}\)</span>被称为信息集（Information set），而<span class="math notranslate nohighlight">\(u_{\mathcal{A}^c}\)</span>被称为冻结向量（Frozen vector）。</p>
+<blockquote>
+<div><p>集合<span class="math notranslate nohighlight">\(\mathcal{A}\)</span>和向量<span class="math notranslate nohighlight">\(u_{\mathcal{A}^c}\)</span>共同确定了一个<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>陪集码。这意味着，Arikan甚至考虑了冻结向量<span class="math notranslate nohighlight">\(u_{\mathcal{A}^c}\)</span>的具体取值对极化码性能的影响。</p>
+</div></blockquote>
+</section>
+<section id="id2">
+<h3>2.2 连续消除译码<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>接收端的译码任务是根据信道输出值<span class="math notranslate nohighlight">\(y_{1:N}\)</span>对信息向量<span class="math notranslate nohighlight">\(u_{\mathcal{A}}\)</span>进行恢复，具体的做法是从<span class="math notranslate nohighlight">\(i=1\)</span>到<span class="math notranslate nohighlight">\(N\)</span>依次计算：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\hat{u}_i\gets\begin{cases}u_i,&amp;\text{if }i\in\mathcal{A}^c\\h_i(y_{1:N},\hat{u}_{1:i-1}),&amp;\text{if }i\in\mathcal{A}\end{cases}\end{split}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(h_i:\mathcal{Y}^N\times\mathcal{X}^{i-1}\mapsto\mathcal{X}\)</span>是根据输入序列进行判决的函数，其定义为：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}h_i(y_{1:N},\hat{u}_{1:i-1}) \triangleq \begin{cases} 0,&amp;\text{if } \frac{W_N^{(i)}(y_{1:N},\hat{u}_{1:i-1}|0)}{W_N^{(i)}(y_{1:N},\hat{u}_{1:i-1}|1)} \geq 1 \\ 1,&amp;\text{otherwise} \end{cases}\end{split}\]</div>
+<blockquote>
+<div><p>条件概率<span class="math notranslate nohighlight">\(W_N^{(i)}(y_{1:N},\hat{u}_{1:i-1}|1)\)</span>的计算问题，实际就是一个Bayes推理问题。</p>
+</div></blockquote>
+</section>
+<section id="id3">
+<h3>2.3 译码错误率<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>上一小节所介绍的的连续消除译码，概括地讲，就是在译码每个极化信道时，使用译码器的判决结果<span class="math notranslate nohighlight">\(\hat{u}_i\)</span>填充非冻结的未知部分<span class="math notranslate nohighlight">\(u_{i\in\mathcal{A^c}}\)</span>。除了之前提到的这样做是不可靠的问题之外，还有一个不易发现的问题：在译码第<span class="math notranslate nohighlight">\(i\)</span>个极化信道时，我们并没有利用在第<span class="math notranslate nohighlight">\(i\)</span>位之后的冻结比特的值，尽管它们是已知的。因此，SC译码算法甚至没有遵循最大似然准则，因为它主动放弃了一部分已知信息。</p>
+<p>事实上，如果你编写代码真正地去实现Arikan所描述的ML译码，在每一步不仅利用前面的冻结比特和判决比特，还利用后面的冻结比特，会遗憾地发现误块率并不会进一步改善。笔者曾抱着试一试的态度向Arikan教授咨询过这个问题，得到的回复是在码长较短的情况下确实会有改善，但由于极化现象，这部分微小的改善会随着码长增加而最终消失。细节可见<a class="reference download internal" download="" href="../_downloads/874491e9a4c7e0a5b25732d38141438b/emails.pdf"><span class="xref download myst">【这里】</span></a>。</p>
+<blockquote>
+<div><p>Arikan教授比较nice，联系方式也是公开的（土耳其Bilkent大学），但请不要过多打扰。</p>
+</div></blockquote>
+<p>关于这些问题，Arikan的解决方案是讨论该非最优算法的平均误块率（Block error）<span class="math notranslate nohighlight">\(\Pr(\hat{u}_{1:N} \neq u_{1:N})\)</span>。不发生误块，意味着整个码字中必须保证所有比特全部正确译码，这是一个比不发生误比特更严格的要求。</p>
+<p><strong><span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>陪集码的误块率</strong>：对任意B-DMC的<span class="math notranslate nohighlight">\(W\)</span>和任意一组参数<span class="math notranslate nohighlight">\((N,K,\mathcal{A})\)</span>，有：</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{2^{N-K}}\sum_{u_{\mathcal{A}^c}\in\mathcal{X}^{N-K}}P_e(N,K,\mathcal{A},u_{\mathcal{A}^c}) \leq \sum_{i\in\mathcal{A}}Z(W_N^{(i)})\]</div>
+<p>因此一定存在一个<span class="math notranslate nohighlight">\(u_{\mathcal{A}^c}\)</span>使得：</p>
+<div class="math notranslate nohighlight">
+\[P_e(N,K,\mathcal{A},u_{\mathcal{A}^c}) \leq \sum_{i\in\mathcal{A}}Z(W_N^{(i)})\]</div>
+<p><strong>极化速率</strong>：对任意对称的B-DMC的<span class="math notranslate nohighlight">\(W\)</span>和任意给定的<span class="math notranslate nohighlight">\(R &lt; I(W)\)</span>，当<span class="math notranslate nohighlight">\(N\)</span>足够大之后，一定存在<span class="math notranslate nohighlight">\(\{1,\ldots,N\}\)</span>的某个子集<span class="math notranslate nohighlight">\(\mathcal{A}_N\)</span>，满足<span class="math notranslate nohighlight">\(|\mathcal{A}_N|\geq NR\)</span>，以及<span class="math notranslate nohighlight">\(\forall i \in\mathcal{A}_N,Z(W_N^{(i)})\leq O(N^{-\frac{5}{4}})\)</span>。</p>
+<p>结合上面两个命题，不难注意到，若某个<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>陪集码的信息集<span class="math notranslate nohighlight">\(\mathcal{A}\)</span>对应了最小的几个<span class="math notranslate nohighlight">\(Z(W_N^{(i)})\)</span>，那么这个码的误块率性能应该会非常不错。恭喜你发现了极化码：</p>
+<p><strong>极化码的定义</strong>：给定一个B-DMC的<span class="math notranslate nohighlight">\(W\)</span>，对于一个具有参数<span class="math notranslate nohighlight">\((N,K,\mathcal{A},u_{\mathcal{A}^c})\)</span>的<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>陪集码，如果其信息集<span class="math notranslate nohighlight">\(\mathcal{A}\)</span>满足条件：<span class="math notranslate nohighlight">\(\forall i\in\mathcal{A},\forall j\not\in\mathcal{A},Z(W_N^{(i)})\leq Z(W_N^{(j)})\)</span>，那么称这个码为信道<span class="math notranslate nohighlight">\(W\)</span>的极化码（Polar Codes）。</p>
+<p>Arikan随后关于极化码的证明工作都是基于<span class="math notranslate nohighlight">\(u_{\mathcal{A}^c}\)</span>可以任意取值的前提来做的，一方面这种随机编码的思想便于理论分析，另一方面，Arikan还证明了任意<span class="math notranslate nohighlight">\(u_{\mathcal{A}^c}\)</span>对应的极化码的性能都相同，因此，极化码可以只使用两个参数<span class="math notranslate nohighlight">\(N,K\)</span>进行表示。</p>
+<p><strong>极化码最优性定理</strong>：对任意对称的B-DMC的<span class="math notranslate nohighlight">\(W\)</span>和任意给定的码率<span class="math notranslate nohighlight">\(R &lt; I(W)\)</span>，令<span class="math notranslate nohighlight">\(K=\lfloor NR \rfloor\)</span>，则信道<span class="math notranslate nohighlight">\(W\)</span>的极化码在SC译码算法下的误块率满足：</p>
+<div class="math notranslate nohighlight">
+\[P_e(N,K)=O(N^{-\frac{1}{4}})\]</div>
+<blockquote>
+<div><p>固定<span class="math notranslate nohighlight">\(R\)</span>，随着码长<span class="math notranslate nohighlight">\(N\)</span>趋于无穷，极化码在SC译码算法下的误块率会以<span class="math notranslate nohighlight">\(\frac{1}{\sqrt[4]{N}}\)</span>的速度降低。</p>
+</div></blockquote>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h2>3. 小结<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<section id="sc">
+<h3>3.1 极化码与SC译码<a class="headerlink" href="#sc" title="Link to this heading">#</a></h3>
+<p>在发现信道极化现象之后，并不意味着极化码会自然而然地出现，这是因为发生极化的是一种只有数学上才存在的特殊信道<span class="math notranslate nohighlight">\(W_N^{(i)}\)</span>，它以<span class="math notranslate nohighlight">\(U_i\)</span>为输入，以<span class="math notranslate nohighlight">\(U_{1:i-1}\)</span>和<span class="math notranslate nohighlight">\(Y_{1:N}\)</span>为输出。在实际的通信系统中，接收端不可能知道非冻结位的取值，只能知道<span class="math notranslate nohighlight">\(Y_{1:N}\)</span>的取值。也就是说，现实场景下，收发端不可能真的通过极化信道进行通信。</p>
+<p>Arikan的工作内容除了证明信道极化现象之外，另一部分工作重点在于论证极化码的最优性。他首先提出一种编码策略，在容量趋于<span class="math notranslate nohighlight">\(0\)</span>的极化信道的输入端填充已知比特、在容量趋于<span class="math notranslate nohighlight">\(1\)</span>的极化信道的输入端填充信息比特，然后进一步给出了一种连续消除译码算法。注意，该算法不是最优的，甚至不是ML译码。但即便如此，经过系统性论证，我们得以了解到，只要码率<span class="math notranslate nohighlight">\(R\)</span>小于信道容量，该算法的译码错误率就会随着码长趋于无穷而逐渐减小、最终趋于<span class="math notranslate nohighlight">\(0\)</span>，这意味着极化码在SC译码算法下达到了Shannon界。</p>
+<p>一个自然的疑问是，是否存在比SC译码算法更好的译码策略？答案是存在，只需要将列表译码的思想与SC译码算法相结合，得到SCL译码算法。其基本思想是保存多个可能的译码路径，尽量降低SC译码算法陷入局部最优的概率，探索更多可能的码字，最后在所有码字中选择一个似然值最大的作为译码结果。该算法将在进阶章进行介绍。</p>
+</section>
+<section id="id5">
+<h3>3.2 极化速率<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>有人可能会对上述定理中出现的奇怪指数<span class="math notranslate nohighlight">\(N^{-\frac{5}{4}}\)</span>产生好奇，实际上这只是Arikan证明过程中所采用的一个数学技巧：只需要证明<span class="math notranslate nohighlight">\(\sum Z(W)\)</span>的指数小于<span class="math notranslate nohighlight">\(0\)</span>即可，所以<span class="math notranslate nohighlight">\(-\frac{5}{4}\)</span>只是一个他随便选取的可用的值而已。</p>
+<p>这个指数随后由其他人进行了更精细的研究，并得到了更好的结果：</p>
+<p><strong>Rate of Polarization</strong>：令<span class="math notranslate nohighlight">\(W\)</span>是一个B-DMC，对任意给定的<span class="math notranslate nohighlight">\(R&lt;I(W)\)</span>以及<span class="math notranslate nohighlight">\(\beta&lt;\frac{1}{2}\)</span>，当码长<span class="math notranslate nohighlight">\(N\)</span>足够大时，都存在集合<span class="math notranslate nohighlight">\(\mathcal{A}_N\subset\{1,\ldots,N\}\)</span>，满足<span class="math notranslate nohighlight">\(|\mathcal{A}_N|\geq NR\)</span>，以及：</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i\in\mathcal{A}_N}Z(W_N^{(i)})=o(2^{-N^\beta})\]</div>
+<p><strong>conversely</strong>：如果<span class="math notranslate nohighlight">\(R&gt;0\)</span>以及<span class="math notranslate nohighlight">\(\beta&gt;\frac{1}{2}\)</span>，那么对任意满足<span class="math notranslate nohighlight">\(|\mathcal{A}_N|\geq NR\)</span>的集合<span class="math notranslate nohighlight">\(\mathcal{A}_N\subset\{1,\ldots,N\}\)</span>，都有：</p>
+<div class="math notranslate nohighlight">
+\[\max\left\{ Z(W_N^{(i)}):i\in\mathcal{A}_N \right\}=\omega(2^{-N^{\beta}})\]</div>
+<p>粗略上来讲，SC译码错误率的降低速度为<span class="math notranslate nohighlight">\(\frac{1}{\sqrt{N}}\)</span>。</p>
+</section>
 </section>
 </section>
 
@@ -420,11 +505,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="../03_Advanced/00_index.html"
+       href="04_construction.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">第三章：极化码进阶</p>
+        <p class="prev-next-title">五、构造算法</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -444,7 +529,18 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.4 误块率最优性</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#not-to">1. 极化现象 <span class="math notranslate nohighlight">\(\not\to\)</span> 极化码</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arikan">2. Arikan的极化码</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathbf-g-n">2.1 <span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>陪集码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2 连续消除译码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.3 译码错误率</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3. 小结</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sc">3.1 极化码与SC译码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.2 极化速率</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

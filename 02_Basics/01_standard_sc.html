@@ -193,6 +193,7 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">一、标准SC译码</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02_polarization.html">二、极化现象</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03_polar_codes.html">三、极化码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_construction.html">四、构造算法</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -474,7 +475,7 @@ document.write(`
 <h3>1.4 非二进制推理问题<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p>Arikan的经典译码算法是基于二进制输入信道的，尽管在实际的通信系统中很少使用非二进制纠错码，但如果是出于理论研究的目的，极化码对非二进制场景也是具有最优性的，不过需要使用特殊的极化矩阵，否则不一定会发生信道极化，或者信道只会出现“部分极化”。</p>
 <blockquote>
-<div><p>实际通信系统会通过Gray编码建立比特和符号之间的映射，但该方案破坏了对称性，会带来性能损失。</p>
+<div><p>实际通信系统会通过Gray编码建立二进制比特和非二进制符号之间的映射</p>
 </div></blockquote>
 <p>非二进制场景下的推导过程几乎完全一致，因为推理结构是不变的：</p>
 <p><img alt="二元极化核" src="../_images/generalized.jpg" /></p>
@@ -523,11 +524,11 @@ document.write(`
 <p>对于第<span class="math notranslate nohighlight">\(i\)</span>个极化信道<span class="math notranslate nohighlight">\(W^{(i)}_N(Y_{1:N},U_{1:i-1}|U_i)\)</span>而言，直接求其转移概率矩阵是不可能的，因为这个矩阵形状为<span class="math notranslate nohighlight">\(2\times 2^{N+i-1}\)</span>，所有可能的输出情况数随码长<span class="math notranslate nohighlight">\(N\)</span>和索引<span class="math notranslate nohighlight">\(i\)</span>指数级增长。尽管无法求出其所有列，但我们可以准确地求出指定的某一列，这可以通过对极化变换<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>进行Bayes推理得到，所采用的算法是置信度传播算法，其计算复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>。</p>
 <p>根据极化码的递归结构，我们可以从右到左，将第<span class="math notranslate nohighlight">\(i\)</span>层中间变量拆分为<span class="math notranslate nohighlight">\(2^i\)</span>个大小为<span class="math notranslate nohighlight">\(N/2^i\)</span>的树节点，从而构成一颗二叉树，如下图所示：</p>
 <p><img alt="极化二叉树" src="../_images/polar_tree.jpg" /></p>
-<p>上一小节介绍的两个推理问题，实际上就是子树上的两个推理问题，其计算方法已经给出：</p>
+<p>上一小节介绍的两个推理问题，实际上就是子树上的两个推理问题，其树状推理图如下所示，相应的计算方法均已给出：</p>
 <p><img alt="二叉树上的推理" src="../_images/tree_inference.jpg" /></p>
 <p>以<span class="math notranslate nohighlight">\(N=4,i=3\)</span>为例，条件概率分布<span class="math notranslate nohighlight">\(\Pr(U_i|Y_{1:N}=y_{1:N},U_{1:i-1}=u_{1:i-1})\)</span>的推理图为：</p>
 <p><img alt="推理示例图" src="../_images/some_inference.jpg" /></p>
-<p>不难发现按照这种方法我们可以求出任意<span class="math notranslate nohighlight">\(i=1,\ldots,N\)</span>的条件概率分布。</p>
+<p>按照这种二叉树表示法，可以很方便地计算任意条件概率分布。</p>
 </section>
 <section id="id8">
 <h3>2.3 连续消除规则<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
@@ -538,13 +539,16 @@ document.write(`
 <div class="math notranslate nohighlight">
 \[\hat{u}_i \gets \mathop{\arg\max}\limits_{k}\Pr(U_i|Y_{1:N}=y_{1:N},U_{1:i-1}=\hat{u}_{1:i-1})\]</div>
 <p>回顾之前的最小和SC译码章节，其中介绍到、但并未详细解释的特殊译码顺序，就来源于此串行译码过程。</p>
+<blockquote>
+<div><p>注意条件部分是估计值<span class="math notranslate nohighlight">\(\hat{u}\)</span>而不是真实值<span class="math notranslate nohighlight">\(u\)</span>，这是因为真实值对译码器而言是不可见的。</p>
+</div></blockquote>
 </section>
 <section id="id9">
 <h3>2.4 算法复杂度<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
-<p>注意到，如果单独考虑每一次的运算，复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>；该操作要执行<span class="math notranslate nohighlight">\(N\)</span>次，因此总复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N^2\log{N})\)</span>。但实际上由于计算是从<span class="math notranslate nohighlight">\(i=1\)</span>串行地执行到<span class="math notranslate nohighlight">\(N\)</span>的，在相邻两步之间存在一些可以共享的信息。如图所示：</p>
+<p>注意到，如果单独考虑每一次的运算，复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>；该操作要执行<span class="math notranslate nohighlight">\(N\)</span>次，因此总复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N^2\log{N})\)</span>。但实际上由于计算是从<span class="math notranslate nohighlight">\(i=1\)</span>串行地执行到<span class="math notranslate nohighlight">\(N\)</span>的，在相邻两步之间存在一些可以共享的信息。下图表示<span class="math notranslate nohighlight">\(N=4,i=1\to 4\)</span>的SC译码过程，相邻两步之间可以共享的信息使用黑线标注，需要重新计算的信息使用蓝色线标注：</p>
 <p><img alt="SC译码的优化" src="../_images/complexity.jpg" /></p>
 <p>不难注意到每一条有向边最多更新三次，因此总运算复杂度仍为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>。</p>
-<p>关于算法的空间复杂度，一般来讲我们认为是<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>，不过如果加以深度优化，在剔除掉后续译码中再也用不到的信息之后空间复杂度可以降低至<span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span>。</p>
+<p>关于算法的空间复杂度，一般来讲我们认为是<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>，不过如果加以深度优化、剔除掉后续译码中再也用不到的信息，空间复杂度可以降低至<span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span>。</p>
 </section>
 </section>
 </section>
