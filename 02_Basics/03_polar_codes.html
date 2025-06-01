@@ -357,7 +357,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.3 译码错误率</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3. 小结</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3. 回顾与总结</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sc">3.1 极化码与SC译码</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.2 极化速率</a></li>
 </ul>
@@ -417,7 +417,7 @@ document.write(`
 </section>
 <section id="id3">
 <h3>2.3 译码错误率<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
-<p>上一小节所介绍的的连续消除译码，概括地讲，就是在译码每个极化信道时，使用译码器的判决结果<span class="math notranslate nohighlight">\(\hat{u}_i\)</span>填充非冻结的未知部分<span class="math notranslate nohighlight">\(u_{i\in\mathcal{A^c}}\)</span>。除了之前提到的这样做是不可靠的问题之外，还有一个不易发现的问题：在译码第<span class="math notranslate nohighlight">\(i\)</span>个极化信道时，我们并没有利用在第<span class="math notranslate nohighlight">\(i\)</span>位之后的冻结比特的值，尽管它们是已知的。因此，SC译码算法甚至没有遵循最大似然准则，因为它主动放弃了一部分已知信息。</p>
+<p>上一小节所介绍的的连续消除译码，概括地讲，就是在译码每个极化信道时，使用译码器的判决比特<span class="math notranslate nohighlight">\(\hat{u}_{i\in\mathcal{A}}\)</span>填充未知的非冻结比特<span class="math notranslate nohighlight">\(u_{i\in\mathcal{A}}\)</span>。除了之前提到的不可靠性之外，还有一个不易发现的问题：在译码第<span class="math notranslate nohighlight">\(i\)</span>个极化信道时，我们并没有利用在第<span class="math notranslate nohighlight">\(i\)</span>位之后的冻结比特的值<span class="math notranslate nohighlight">\(u_{j\in\mathcal{A}^c,j&gt;i}\)</span>，尽管它们是已知的。因此，SC译码算法甚至没有遵循最大似然准则，因为它主动放弃了一部分已知信息。</p>
 <p>事实上，如果你编写代码真正地去实现Arikan所描述的ML译码，在每一步不仅利用前面的冻结比特和判决比特，还利用后面的冻结比特，会遗憾地发现误块率并不会进一步改善。笔者曾抱着试一试的态度向Arikan教授咨询过这个问题，得到的回复是在码长较短的情况下确实会有改善，但由于极化现象，这部分微小的改善会随着码长增加而最终消失。细节可见<a class="reference download internal" download="" href="../_downloads/874491e9a4c7e0a5b25732d38141438b/emails.pdf"><span class="xref download myst">【这里】</span></a>。</p>
 <blockquote>
 <div><p>Arikan教授比较nice，联系方式也是公开的（土耳其Bilkent大学），但请不要过多打扰。</p>
@@ -443,7 +443,7 @@ document.write(`
 </section>
 <hr class="docutils" />
 <section id="id4">
-<h2>3. 小结<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<h2>3. 回顾与总结<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
 <section id="sc">
 <h3>3.1 极化码与SC译码<a class="headerlink" href="#sc" title="Link to this heading">#</a></h3>
 <p>在发现信道极化现象之后，并不意味着极化码会自然而然地出现，这是因为发生极化的是一种只有数学上才存在的特殊信道<span class="math notranslate nohighlight">\(W_N^{(i)}\)</span>，它以<span class="math notranslate nohighlight">\(U_i\)</span>为输入，以<span class="math notranslate nohighlight">\(U_{1:i-1}\)</span>和<span class="math notranslate nohighlight">\(Y_{1:N}\)</span>为输出。在实际的通信系统中，接收端不可能知道非冻结位的取值，只能知道<span class="math notranslate nohighlight">\(Y_{1:N}\)</span>的取值。也就是说，现实场景下，收发端不可能真的通过极化信道进行通信。</p>
@@ -460,7 +460,9 @@ document.write(`
 <p><strong>conversely</strong>：如果<span class="math notranslate nohighlight">\(R&gt;0\)</span>以及<span class="math notranslate nohighlight">\(\beta&gt;\frac{1}{2}\)</span>，那么对任意满足<span class="math notranslate nohighlight">\(|\mathcal{A}_N|\geq NR\)</span>的集合<span class="math notranslate nohighlight">\(\mathcal{A}_N\subset\{1,\ldots,N\}\)</span>，都有：</p>
 <div class="math notranslate nohighlight">
 \[\max\left\{ Z(W_N^{(i)}):i\in\mathcal{A}_N \right\}=\omega(2^{-N^{\beta}})\]</div>
-<p>粗略上来讲，SC译码错误率的降低速度为<span class="math notranslate nohighlight">\(\frac{1}{\sqrt{N}}\)</span>。</p>
+<blockquote>
+<div><p>粗略上来讲，SC译码错误率的降低速度为<span class="math notranslate nohighlight">\(\frac{1}{\sqrt{N}}\)</span>。</p>
+</div></blockquote>
 </section>
 </section>
 </section>
@@ -536,7 +538,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.3 译码错误率</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3. 小结</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3. 回顾与总结</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sc">3.1 极化码与SC译码</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.2 极化速率</a></li>
 </ul>
