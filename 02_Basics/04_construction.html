@@ -193,13 +193,12 @@
 <li class="toctree-l2"><a class="reference internal" href="01_standard_sc.html">一、标准SC译码</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02_polarization.html">二、极化现象</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03_polar_codes.html">三、极化码</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">四、构造算法</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">五、构造算法</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../03_Advanced/00_index.html">第三章：极化码进阶</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/01_monotone.html">一、单调链极化码</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/02_source.html">二、信源极化码</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/03_scl_decoding.html">三、SCL译码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_Advanced/01_compression.html">一、极化数据压缩</a></li>
 </ul>
 </details></li>
 </ul>
@@ -350,8 +349,13 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">五、构造算法</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo">1. Monte-Carlo构造法</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2. 密度演化算法</a></li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -366,8 +370,8 @@ document.write(`
 <h1>五、构造算法<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <section id="monte-carlo">
 <h2>1. Monte-Carlo构造法<a class="headerlink" href="#monte-carlo" title="Link to this heading">#</a></h2>
-<p>之前的章节介绍到，在信道极化的过程中，我们只能知道一个大概的大小关系，<span class="math notranslate nohighlight">\(I(W')&lt;I(W)&lt;I(W'')\)</span>，而这些新信道容量的具体值并没有一个简单通用的计算公式。在无法准确计算时，我们可以使用Monte-Carlo法进行估计，这也是Arikan最初的建议。</p>
-<p>事实上，我们要估算的并不是信道的容量，而是信道的传输正确率，毕竟对二进制信道而言，容量越大，其传输正确率也越高。具体做法是，在每一轮仿真中，首先均匀随机生成一个比特序列<span class="math notranslate nohighlight">\(u_{1:N}\)</span>，对其进行极化变换得到<span class="math notranslate nohighlight">\(x_{1:N}=u_{1:N}\mathbf{G}_N\mathbf{B}_N\)</span>，然后将这个序列通过信道，得到输出序列<span class="math notranslate nohighlight">\(y_{1:N}\)</span>。最后，我们依次计算：</p>
+<p>之前的章节介绍到，在信道极化的过程中，我们只能知道一个大概的大小关系，<span class="math notranslate nohighlight">\(I(W')&lt;I(W)&lt;I(W'')\)</span>，而这些新信道容量的具体值并没有一个简单通用的计算公式。在无法准确计算时，我们可以使用Monte-Carlo法进行估计。</p>
+<p>为简单起见，我们先以传输正确率的估计为例，毕竟对二进制信道而言，容量越大，其传输正确率也越高。具体做法是，在每一轮仿真中，首先均匀随机生成一个比特序列<span class="math notranslate nohighlight">\(u_{1:N}\)</span>，对其进行极化变换得到<span class="math notranslate nohighlight">\(x_{1:N}=u_{1:N}\mathbf{G}_N\mathbf{B}_N\)</span>，然后将这个序列通过信道，得到输出序列<span class="math notranslate nohighlight">\(y_{1:N}\)</span>。最后，我们依次计算：</p>
 <div class="math notranslate nohighlight">
 \[\Pr(U_i=u_i|Y_{1:N}=y_{1:N},U_{1:i-1}=u_{1:i-1}),u_i\in\{0,1\}\]</div>
 <p>这样便得到了<span class="math notranslate nohighlight">\(N\)</span>个条件概率分布。注意，条件部分是真实值<span class="math notranslate nohighlight">\(u_{1:i-1}\)</span>而不是估计值，这与SC译码过程有所不同，因为在这里我们的目的是为了估计极化信道的传输正确率，而不是为了进行译码，自然也不受到实际通信系统的能力限制。</p>
@@ -385,10 +389,10 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 初始化一个极化迭代器</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 初始化系统参数和极化码迭代器</span>
 <span class="n">N</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">2</span>
-<span class="n">flip_prob</span> <span class="o">=</span> <span class="mf">0.11</span>
 <span class="n">pIter</span> <span class="o">=</span> <span class="n">PolarIterator</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+<span class="n">flip_prob</span> <span class="o">=</span> <span class="mf">0.11</span>
 </pre></div>
 </div>
 </div>
@@ -429,7 +433,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/caee95249fdf25ac6e4c134449c057de2f5dd000a3a5a7fde2c758848980a067.png" src="../_images/caee95249fdf25ac6e4c134449c057de2f5dd000a3a5a7fde2c758848980a067.png" />
+<img alt="../_images/15cb1b234452c70318dfb2598b925542cc5d21ddf749ff2bc37a3ca482028214.png" src="../_images/15cb1b234452c70318dfb2598b925542cc5d21ddf749ff2bc37a3ca482028214.png" />
 </div>
 </div>
 <p>从上图中可以看出，使用Monte-Carlo法估计错判率的精度是比较差的。实际上，Arikan的建议是统计它们Bhattacharyya参数：</p>
@@ -461,7 +465,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 绘制这N个极化信道的错传率</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 绘制这N个极化信道的Z参数</span>
 <span class="n">error_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,))</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
     <span class="n">error_times</span> <span class="o">+=</span> <span class="n">simulate</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1000</span>
@@ -472,12 +476,16 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/105893ae0236faf4769eece07d71126817f0d33899be9b7acfb1550443c59b64.png" src="../_images/105893ae0236faf4769eece07d71126817f0d33899be9b7acfb1550443c59b64.png" />
+<img alt="../_images/72112643eb3add5f5adfdbc8a3d8448493bbcd84b602c7383f05d26124f36a3d.png" src="../_images/72112643eb3add5f5adfdbc8a3d8448493bbcd84b602c7383f05d26124f36a3d.png" />
 </div>
 </div>
-<p>可以发现准确度高了很多，直观上可以立即为省去了判决的过程，直接使用了在每次实验中的错判率期望值。</p>
-<hr class="docutils" />
+<p>可以发现准确度高了很多，直观上可以理解为省去了判决的过程，直接使用了在每次实验中的错判率期望值。</p>
 </section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="id2">
+<h1>2. 密度演化算法<a class="headerlink" href="#id2" title="Link to this heading">#</a></h1>
+<p>密度演化算法（Density Evolution Algorithm）是LDPC中使用的一类算法……未完待续</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -544,8 +552,13 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">五、构造算法</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo">1. Monte-Carlo构造法</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2. 密度演化算法</a></li>
+</ul>
+
   </nav></div>
 
 </div></div>
