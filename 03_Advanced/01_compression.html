@@ -535,7 +535,7 @@ u_i, &amp;\text{if } i \in \mathcal{H} \\
 <p>我们在本小节概括性地列举一下将会用到的基本概念。</p>
 <p><strong>率失真函数</strong>：对于一个给定的离散无记忆信源<span class="math notranslate nohighlight">\(X\)</span>和一个指定的失真度测量函数<span class="math notranslate nohighlight">\(d(\cdot,\cdot)\)</span>，率失真函数的定义为：</p>
 <div class="math notranslate nohighlight">
-\[R(D)=\min\limits_{p(\hat{x}|x):\mathbb{E}[d(X|hat{X})]\leq D}I(X;\hat{X})\]</div>
+\[R(D)=\min\limits_{p(\hat{x}|x):\mathbb{E}[d(X|\hat{X})]\leq D}I(X;\hat{X})\]</div>
 <p>其中：</p>
 <ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(X\)</span>是信源随机变量，取值于集合<span class="math notranslate nohighlight">\(\mathcal{X}\)</span>，概率分布已知；而<span class="math notranslate nohighlight">\(\hat{X}\)</span>则是另一个同样取值于集合<span class="math notranslate nohighlight">\(\mathcal{X}\)</span>的随机变量，它由<span class="math notranslate nohighlight">\(X\)</span>通过转移概率矩阵<span class="math notranslate nohighlight">\(p(\hat{x}|x)\)</span>生成；</p></li>
@@ -548,7 +548,7 @@ u_i, &amp;\text{if } i \in \mathcal{H} \\
 <p>接下来我们引入信源编译码器的概念。设信源随机序列的长度为<span class="math notranslate nohighlight">\(n\)</span>，那么编码器就是一个将信源随机序列映射到<span class="math notranslate nohighlight">\(M_n\)</span>个码字的函数<span class="math notranslate nohighlight">\(f_n:\mathcal{X}^n\mapsto\{1,2\ldots,M_n\}\)</span>，译码器则是从码字映射回原空间的函数<span class="math notranslate nohighlight">\(g_n:\{1,2,\ldots,M_n\}\mapsto\mathcal{X}^n\)</span>，它们的码率为<span class="math notranslate nohighlight">\(R_n=\frac{1}{n}\log{M_n}\)</span>。我们称映射回的随机变量<span class="math notranslate nohighlight">\(\hat{X}\triangleq g_n(f_n(X))\)</span>为<span class="math notranslate nohighlight">\(X\)</span>的重构。</p>
 <p><strong>限失真信源编码定理</strong>：对任意<span class="math notranslate nohighlight">\(\epsilon&gt;0\)</span>，存在正整数<span class="math notranslate nohighlight">\(n\)</span>和编译码器<span class="math notranslate nohighlight">\(f_n,g_n\)</span>，满足：</p>
 <div class="math notranslate nohighlight">
-\[R_n \leq R(D) + \epsilon\text{,\ \ }\frac{1}{n}\sum_{i=1}^{N}\mathbb{E}[d(X_i,\hat{X}_i)]\leq D+\epsilon\]</div>
+\[R_n \leq R(D) + \epsilon,\frac{1}{n}\sum_{i=1}^{N}\mathbb{E}[d(X_i,\hat{X}_i)]\leq D+\epsilon\]</div>
 <p><strong>Conversely</strong>：若对某编译码器而言，有：</p>
 <div class="math notranslate nohighlight">
 \[\mathop{\lim\sup}\limits_{n\to\infty}\frac{1}{n}\sum_{i=1}^{N}\mathbb{E}[d(X_i,\hat{X}_i)]\leq D\]</div>
@@ -618,13 +618,6 @@ u_i, &amp;\text{if } i \in \mathcal{H} \\
 <p>然后随机生成一个信源序列<span class="math notranslate nohighlight">\(y_{1:N}\)</span>，对它进行SC编码、并统计译码后的平均失真度：</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bitrev</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">bitrev_perm</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 随机生成信源数据</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,))</span>
 </pre></div>
@@ -663,6 +656,7 @@ u_i, &amp;\text{if } i \in \mathcal{H} \\
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 简单译码</span>
+<span class="n">bitrev</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">bitrev_perm</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 <span class="n">y_hat</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">basic_encode</span><span class="p">(</span><span class="n">u_hat</span><span class="p">)[</span><span class="n">bitrev</span><span class="p">]</span>
 <span class="c1"># 统计失真度</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;设计失真度</span><span class="si">{</span><span class="n">D</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">，码率为</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s2">时的实际失真度为</span><span class="si">{</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">y_hat</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
