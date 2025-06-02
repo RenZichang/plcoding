@@ -357,8 +357,10 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2. 有损压缩</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.1 限失真信源压缩问题</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.1 限失真信源编码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.2 极化码回顾</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.3 核心内容</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.4 仿真与总结</a></li>
 </ul>
 </li>
 </ul>
@@ -381,7 +383,8 @@ document.write(`
 <p>在实际场景下一般没有所谓的侧信息，此时只需要认为侧信息<span class="math notranslate nohighlight">\(Y\)</span>与<span class="math notranslate nohighlight">\(X\)</span>之间相互独立，下文中出现的相关结论和定理依然成立。</p>
 <section id="id3">
 <h3>1.1 信源极化现象<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
-<p>令<span class="math notranslate nohighlight">\(X\)</span>是一离散无记忆二进制随机变量，另一随机变量<span class="math notranslate nohighlight">\(Y\)</span>是关于<span class="math notranslate nohighlight">\(X\)</span>的“侧信息”（side-information）。我们将随机变量二元组<span class="math notranslate nohighlight">\((X,Y)\)</span>复制<span class="math notranslate nohighlight">\(N\)</span>个相互独立的副本，得到随机序列<span class="math notranslate nohighlight">\((X_{1:N},Y_{1:N})\)</span>，其中<span class="math notranslate nohighlight">\(N=2^n,n\geq 1\)</span>是码长。令<span class="math notranslate nohighlight">\(U_{1:N}=X_{1:N}\mathbf{G}_N\)</span>是由随机序列<span class="math notranslate nohighlight">\(X_{1:N}\)</span>经过极化变换后得到的序列，显然它也是随机的。</p>
+<p>令<span class="math notranslate nohighlight">\(X\)</span>是一离散无记忆二进制随机变量，另一随机变量<span class="math notranslate nohighlight">\(Y\)</span>是关于<span class="math notranslate nohighlight">\(X\)</span>的“侧信息”（side-information）。我们将随机变量二元组<span class="math notranslate nohighlight">\((X,Y)\)</span>复制<span class="math notranslate nohighlight">\(N\)</span>个相互独立的副本，得到随机序列<span class="math notranslate nohighlight">\((X_{1:N},Y_{1:N})\)</span>，其中<span class="math notranslate nohighlight">\(N=2^n,n\geq 1\)</span>是码长。令<span class="math notranslate nohighlight">\(U_{1:N}=X_{1:N}\mathbf{G}_N\)</span>是由随机序列<span class="math notranslate nohighlight">\(X_{1:N}\)</span>经过极化变换后得到的序列，显然它也是随机的。这三类随机变量<span class="math notranslate nohighlight">\(U,X,Y\)</span>的关系示意图为：</p>
+<p><img alt="极化码中的三类随机变量" src="../_images/universal_diagram.png" /></p>
 <p><strong>信源极化定理</strong>：对任意给定的<span class="math notranslate nohighlight">\(\delta\in(0,1)\)</span>，当<span class="math notranslate nohighlight">\(N\to\infty\)</span>时，有：</p>
 <div class="math notranslate nohighlight">
 \[\frac{\lvert i\in\{1,\ldots,N\}:H(U_i|Y_{1:N},U_{1:i-1})\in(1-\delta,1]\rvert}{N}\to H(X|Y)\]</div>
@@ -394,6 +397,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">plcoding</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">plcoding.cpp_core.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">prob_polarize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plcoding.cpp_core.iterator</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarIterator</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="c1"># 初始化系统参数</span>
@@ -416,7 +420,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/809355a09a421d691091c4fed7376a9a5a9b5688ffc9d455d6bf79b019fe0f29.png" src="../_images/809355a09a421d691091c4fed7376a9a5a9b5688ffc9d455d6bf79b019fe0f29.png" />
+<img alt="../_images/3f800246df96cd805482f1084bfb664c39ecbd25b6f1de7061725ae2e344ad16.png" src="../_images/3f800246df96cd805482f1084bfb664c39ecbd25b6f1de7061725ae2e344ad16.png" />
 </div>
 </div>
 </section>
@@ -464,7 +468,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 指定信源熵、编码码率的情况，计算不同码长下低熵集的Z参数之和</span>
-<span class="n">ns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">19</span><span class="p">)</span>
+<span class="n">ns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
 <span class="n">y1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sum_Z</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">n</span><span class="p">),</span> <span class="n">R</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">H</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ns</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -479,7 +483,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/73d381c4478e0d6a5b17b9e067d74332ba5e92a12f7935f058f916cbd5e2f8cd.png" src="../_images/73d381c4478e0d6a5b17b9e067d74332ba5e92a12f7935f058f916cbd5e2f8cd.png" />
+<img alt="../_images/5b1b2678bfaeebc32cfd350a10df8bdf0ef4a8788a1153699c50fe168bbcc12c.png" src="../_images/5b1b2678bfaeebc32cfd350a10df8bdf0ef4a8788a1153699c50fe168bbcc12c.png" />
 </div>
 </div>
 </section>
@@ -525,12 +529,160 @@ u_i, &amp;\text{if } i \in \mathcal{H} \\
 <hr class="docutils" />
 <section id="id8">
 <h2>2. 有损压缩<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
-<p>极化码对限失真信源压缩问题而言，也是最优的。这项工作由Satish Babu Korada和Rüdiger L. Urbanke完成。</p>
+<p>极化码对限失真信源压缩问题而言，也是最优的。这项工作由Satish Babu Korada和Rüdiger L. Urbanke完成。相比无失真信源压缩而言，这个问题更加复杂，所采用的极化码也是一类奇特的随机码。</p>
 <section id="id9">
-<h3>2.1 限失真信源压缩问题<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<h3>2.1 限失真信源编码<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>我们在本小节概括性地列举一下将会用到的基本概念。</p>
+<p><strong>率失真函数</strong>：对于一个给定的离散无记忆信源<span class="math notranslate nohighlight">\(X\)</span>和一个指定的失真度测量函数<span class="math notranslate nohighlight">\(d(\cdot,\cdot)\)</span>，率失真函数的定义为：</p>
+<div class="math notranslate nohighlight">
+\[R(D)=\min\limits_{p(\hat{x}|x):\mathbb{E}[d(X|hat{X})]\leq D}I(X;\hat{X})\]</div>
+<p>其中：</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(X\)</span>是信源随机变量，取值于集合<span class="math notranslate nohighlight">\(\mathcal{X}\)</span>，概率分布已知；而<span class="math notranslate nohighlight">\(\hat{X}\)</span>则是另一个同样取值于集合<span class="math notranslate nohighlight">\(\mathcal{X}\)</span>的随机变量，它由<span class="math notranslate nohighlight">\(X\)</span>通过转移概率矩阵<span class="math notranslate nohighlight">\(p(\hat{x}|x)\)</span>生成；</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{E}[d(x,\hat{x})]\)</span>是失真度测量函数关于某联合概率分布<span class="math notranslate nohighlight">\(p(x,\hat{x})\)</span>的期望，该联合概率分布由条件概率分布<span class="math notranslate nohighlight">\(p(\hat{x}|x)\)</span>所生成；</p></li>
+<li><p><span class="math notranslate nohighlight">\(D \geq 0\)</span>是自变量，表示失真度；</p></li>
+<li><p><span class="math notranslate nohighlight">\(I(X;\hat{X})\)</span>表示<span class="math notranslate nohighlight">\(X\)</span>和<span class="math notranslate nohighlight">\(\hat{X}\)</span>之间的互信息。</p></li>
+</ol>
+<p>通俗地讲，给定任意一个转移概率矩阵<span class="math notranslate nohighlight">\(p(\hat{x}|x)\)</span>，都可以将<span class="math notranslate nohighlight">\(X\)</span>映射为另一个随机变量<span class="math notranslate nohighlight">\(\hat{X}\)</span>，这两个随机变量之间的互信息记作<span class="math notranslate nohighlight">\(I(X;\hat{X})\)</span>；进一步地，我们还可以计算出此时的平均失真度<span class="math notranslate nohighlight">\(\mathbb{E}[d(X|\hat{X})]\)</span>。也就是说，每个转移概率矩阵都会有一个对应的互信息和平均失真度。在这个理解的基础上，我们定义率失真函数<span class="math notranslate nohighlight">\(R(D)\)</span>是所有平均失真度不超过<span class="math notranslate nohighlight">\(D\)</span>的转移概率矩阵中，拥有最小互信息的互信息值。</p>
+<p>求解该函数的过程是一个优化过程，对不同的信源（甚至是连续信源）、不同的失真度测量函数，有不同的率失真函数。一般来讲我们只关注几个比较重要的组合，例如二进制信源与Hamming失真测度、Gaussian信源与平方失真测度等。</p>
+<p>接下来我们引入信源编译码器的概念。设信源随机序列的长度为<span class="math notranslate nohighlight">\(n\)</span>，那么编码器就是一个将信源随机序列映射到<span class="math notranslate nohighlight">\(M_n\)</span>个码字的函数<span class="math notranslate nohighlight">\(f_n:\mathcal{X}^n\mapsto\{1,2\ldots,M_n\}\)</span>，译码器则是从码字映射回原空间的函数<span class="math notranslate nohighlight">\(g_n:\{1,2,\ldots,M_n\}\mapsto\mathcal{X}^n\)</span>，它们的码率为<span class="math notranslate nohighlight">\(R_n=\frac{1}{n}\log{M_n}\)</span>。我们称映射回的随机变量<span class="math notranslate nohighlight">\(\hat{X}\triangleq g_n(f_n(X))\)</span>为<span class="math notranslate nohighlight">\(X\)</span>的重构。</p>
+<p><strong>限失真信源编码定理</strong>：对任意<span class="math notranslate nohighlight">\(\epsilon&gt;0\)</span>，存在正整数<span class="math notranslate nohighlight">\(n\)</span>和编译码器<span class="math notranslate nohighlight">\(f_n,g_n\)</span>，满足：</p>
+<div class="math notranslate nohighlight">
+\[R_n \leq R(D) + \epsilon\text{,\ \ }\frac{1}{n}\sum_{i=1}^{N}\mathbb{E}[d(X_i,\hat{X}_i)]\leq D+\epsilon\]</div>
+<p><strong>Conversely</strong>：若对某编译码器而言，有：</p>
+<div class="math notranslate nohighlight">
+\[\mathop{\lim\sup}\limits_{n\to\infty}\frac{1}{n}\sum_{i=1}^{N}\mathbb{E}[d(X_i,\hat{X}_i)]\leq D\]</div>
+<p>则必有：</p>
+<div class="math notranslate nohighlight">
+\[\mathop{\lim\inf}\limits_{n\to\infty}R_n\geq R(D)\]</div>
+<p>上面两个定理共同作用，得到率失真函数可达的最终结论。</p>
 </section>
 <section id="id10">
-<h3>2.2<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<h3>2.2 极化码回顾<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p><strong>极化码</strong>：由集合<span class="math notranslate nohighlight">\(F\subset\{1,\ldots,N\}\)</span>和向量<span class="math notranslate nohighlight">\(u_F\in\{0,1\}^{|F|}\)</span>定义的极化码<span class="math notranslate nohighlight">\(C_N(F,u_F)\)</span>，指的是按照如下方式生成的线性码：</p>
+<div class="math notranslate nohighlight">
+\[C_N(F,u_F)=\{x_{1:N}=u_{1:N}\mathbf{G}_N:u_{F^c}\in\{0,1\}^{|F^c|}\}\]</div>
+<p>也就是说，码<span class="math notranslate nohighlight">\(C_N(F,u_F)\)</span>是通过将集合<span class="math notranslate nohighlight">\(F\)</span>所指示的子序列固定取值为<span class="math notranslate nohighlight">\(u_F\)</span>，然后令<span class="math notranslate nohighlight">\(u_{F^c}\)</span>遍历所有可能值所生成的。</p>
+<p><strong>极化码集</strong>：给定集合<span class="math notranslate nohighlight">\(F\subset\{1,\ldots,N\}\)</span>，极化码集<span class="math notranslate nohighlight">\(C_N(F)\)</span>指的是如下集合：</p>
+<div class="math notranslate nohighlight">
+\[C_N(F)=\{C_N(F,u_F),\forall u_F\in\{0,1\}^{|F|}\}\]</div>
+<p>也就是具有相同冻结集<span class="math notranslate nohighlight">\(F\)</span>的所有极化码所构成的集合。</p>
+<blockquote>
+<div><p>极化码理论工作的固定范式：分析给定冻结集<span class="math notranslate nohighlight">\(F\)</span>对应的所有极化码的平均错误率，然后说明冻结向量的取值与性能无关。</p>
+</div></blockquote>
+</section>
+<section id="id11">
+<h3>2.3 核心内容<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p><strong>方案概览</strong>：考虑使用一个极化码<span class="math notranslate nohighlight">\(C_N(F,u_F)\)</span>来进行信源编码。冻结集<span class="math notranslate nohighlight">\(F\)</span>以及相应的冻结向量<span class="math notranslate nohighlight">\(u_F\)</span>对编码器和译码器而言都是已知的。编码过程是将信源序列<span class="math notranslate nohighlight">\(y_{1:N}\)</span>映射到码字<span class="math notranslate nohighlight">\(x_{1:N}\in C_N(F,u_F)\)</span>。由于冻结向量<span class="math notranslate nohighlight">\(u_F\)</span>是已知的、确定的，因此实际上码字<span class="math notranslate nohighlight">\(x_{1:N}\)</span>是由非冻结向量<span class="math notranslate nohighlight">\(u_{F^c}=(x_{1:N}\mathbf{G}_N^{-1})_{F^c}\)</span>唯一确定的，我们可以称其为该码字的“索引”。译码过程是根据这个码字的索引<span class="math notranslate nohighlight">\(u_{F^c}\)</span>恢复码字的值<span class="math notranslate nohighlight">\(x_{1:N}\)</span>。由于编译码器对冻结向量<span class="math notranslate nohighlight">\(u_F\)</span>的值是了解的，因此这个恢复过程就是简单的矩阵运算<span class="math notranslate nohighlight">\(x_{1:N}=u_{1:N}\mathbf{G}_N\)</span>。不难知道，该编译码策略的码率就是<span class="math notranslate nohighlight">\(\frac{|F^c|}{N}\)</span>。</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(y_{1:N}\)</span>和<span class="math notranslate nohighlight">\(x_{1:N}\)</span>之间的映射不必一一对应，也不必是确定性的。</p>
+</div></blockquote>
+<p><strong>连续消除编码</strong>：令<span class="math notranslate nohighlight">\(y_{1:N}\)</span>是信源的一次实现，我们使用<span class="math notranslate nohighlight">\(\hat{u}_{1:N}\)</span>表示如下基于极化码<span class="math notranslate nohighlight">\(C_N(F,u_F)\)</span>的编码输出结果：</p>
+<ol class="arabic simple">
+<li><p>如果<span class="math notranslate nohighlight">\(i \in F\)</span>，那么令<span class="math notranslate nohighlight">\(\hat{u}_i = u_i\)</span>；</p></li>
+<li><p>如果<span class="math notranslate nohighlight">\(i \in F^c\)</span>，那么计算条件概率<span class="math notranslate nohighlight">\(P_N^{(i)}(u) = \Pr(U_i = u | Y_{1:N} = y_{1:N}, U_{1:i-1} = \hat{u}_{1:i-1})\)</span>，然后令：</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}\hat{u}_i = \begin{cases}0, &amp;\text{w.p. } P_N^{(i)}(0) \\ 1, &amp;\text{w.p. } P_N^{(i)}(1)\end{cases}\end{split}\]</div>
+<p>上述记号“w.p.”，全称“with the probability of”，指的是“以概率……执行操作”。这意味着，上述过程的输出结果并非确定的，而是随机的。这种策略被称为随机舍入（randomized rounding）。</p>
+<p><strong>极化码的率失真界可达性定理</strong>：设<span class="math notranslate nohighlight">\(Y\)</span>是一个二进制对称信源，固定一个设计失真率<span class="math notranslate nohighlight">\(D\in(0,\frac{1}{2})\)</span>，则对任意码率<span class="math notranslate nohighlight">\(R&gt;1-h_2(D)\)</span>，和任意一个<span class="math notranslate nohighlight">\(\beta\in(0,\frac{1}{2})\)</span>，都存在码长为<span class="math notranslate nohighlight">\(N\)</span>、码率<span class="math notranslate nohighlight">\(R_N &lt; R\)</span>的极化码，在基于随机舍入的连续消除编码算法下，达到失真度<span class="math notranslate nohighlight">\(D_N \leq D + \mathcal{O}(2^{-N^\beta})\)</span>。</p>
+<p>解释：</p>
+<ol class="arabic simple">
+<li><p>二进制对称信源，其实就是一个输出比特<span class="math notranslate nohighlight">\(0/1\)</span>的概率均为<span class="math notranslate nohighlight">\(0.5\)</span>二进制离散无记忆信源；</p></li>
+<li><p>设计失真率<span class="math notranslate nohighlight">\(D\)</span>，极化码的设计参数，后面将基于此确定一个最优的极化码；</p></li>
+<li><p>参数<span class="math notranslate nohighlight">\(\beta\)</span>以及相应的<span class="math notranslate nohighlight">\(\mathcal{O}(2^{-N^\beta})\)</span>都是用于表示极化速率的参数，这意味着这份工作不仅证明了渐进性，还证明了渐进趋势。</p></li>
+</ol>
+<p><strong>确定冻结集</strong>：考虑设计失真度为<span class="math notranslate nohighlight">\(D\)</span>，令<span class="math notranslate nohighlight">\(W\)</span>表示一个比特翻转概率为<span class="math notranslate nohighlight">\(D\)</span>的二进制对称信道，令<span class="math notranslate nohighlight">\(R=R(D)+\delta\)</span>其中<span class="math notranslate nohighlight">\(\delta&gt;0\)</span>是任意给定的值。我们认为信源序列<span class="math notranslate nohighlight">\(Y_{1:N}\)</span>和编码结果<span class="math notranslate nohighlight">\(U_{1:N}\)</span>之间通过信道<span class="math notranslate nohighlight">\(W\)</span>和<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>相连，也即构成下所示关系：<br />
+<img alt="极化码经典结构" src="../_images/universal_diagram.png" /><br />
+计算所有的Bhattacharyya参数<span class="math notranslate nohighlight">\(Z(W_N^{(i)}),i\in\{1,\ldots,N\}\)</span>并将它们按照从大到小排序，然后使用前<span class="math notranslate nohighlight">\(\lfloor NR \rfloor\)</span>个元素对应的索引构成集合<span class="math notranslate nohighlight">\(\mathcal{F}\)</span>。</p>
+<p><strong>冻结向量不影响性能</strong>：给定冻结集<span class="math notranslate nohighlight">\(F\subset\{1,\ldots,N\}\)</span>，上述编译码方案的平均失真度<span class="math notranslate nohighlight">\(D_N(F,u_F)\)</span>与冻结向量<span class="math notranslate nohighlight">\(u_F\in\{0,1\}^{|F|}\)</span>的取值无关。</p>
+</section>
+<section id="id12">
+<h3>2.4 仿真与总结<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>首先给出论文展示的仿真结果：</p>
+<p><img alt="极化码的率失真性能" src="../_images/lossy_source.png" /></p>
+<p>这个结果图其实有一些轻微的误导性，看起来似乎随着码长增加，极化码的率失真曲线逐渐贴近了Shannon所规定的率失真界。但如果这样想就会很容易产生误解。实际上，这里的每个点，都对应了一个不同的极化码<span class="math notranslate nohighlight">\(C_N(F,u_F)\)</span>。换句话说，这个结果图所描述的其实是“极化码这一类码”的能力，而不是“某一个极化码”的能力。</p>
+<p>可以简单用代码实现一下。首先考虑码长为<span class="math notranslate nohighlight">\(N=1024\)</span>、设计失真度为<span class="math notranslate nohighlight">\(D=0.11\)</span>的极化码<span class="math notranslate nohighlight">\(C_N(F,u_F)\)</span>，我们使用Monte-Carlo法选取一个合适的冻结集<span class="math notranslate nohighlight">\(F\)</span>：</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 仿真参数与初始化</span>
+<span class="n">N</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">2</span>
+<span class="n">D</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="mf">0.11</span><span class="p">,</span> <span class="mf">0.55</span>
+<span class="c1"># 选取Z最大的几项为冻结集</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">get_Z</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">h2_of</span><span class="p">(</span><span class="n">D</span><span class="p">))</span>
+<span class="n">is_frozen</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">topk_indicate</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">R</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>然后随机生成一个信源序列<span class="math notranslate nohighlight">\(y_{1:N}\)</span>，对它进行SC编码、并统计译码后的平均失真度：</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bitrev</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">bitrev_perm</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 随机生成信源数据</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 初始化SC迭代器</span>
+<span class="n">pIter</span> <span class="o">=</span> <span class="n">PolarIterator</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+<span class="n">px</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">q</span><span class="p">))</span>
+<span class="n">px</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">D</span>
+<span class="n">px</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span>
+<span class="n">pIter</span><span class="o">.</span><span class="n">set_priors</span><span class="p">(</span><span class="n">px</span><span class="p">)</span>
+<span class="n">pIter</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SC编码</span>
+<span class="n">u_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">pIter</span><span class="o">.</span><span class="n">get_prob</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_frozen</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+        <span class="n">symbol</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">symbol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">prob</span><span class="p">)</span>
+    <span class="n">u_hat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span>
+    <span class="n">pIter</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 简单译码</span>
+<span class="n">y_hat</span> <span class="o">=</span> <span class="n">plcoding</span><span class="o">.</span><span class="n">basic_encode</span><span class="p">(</span><span class="n">u_hat</span><span class="p">)[</span><span class="n">bitrev</span><span class="p">]</span>
+<span class="c1"># 统计失真度</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;设计失真度</span><span class="si">{</span><span class="n">D</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">，码率为</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s2">时的实际失真度为</span><span class="si">{</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">y_hat</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>设计失真度0.11，码率为0.55时的实际失真度为0.1133
+</pre></div>
+</div>
+</div>
+</div>
+<p>注意上述所描述的过程与经典的极化码编译码方案存在极其显著的区别。传统的编码方案，一般是将原序列<span class="math notranslate nohighlight">\(y_{1:N}\)</span>通过极化变换<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>得到变换序列<span class="math notranslate nohighlight">\(u_{1:N}\)</span>，然后输出其特定的一部分如<span class="math notranslate nohighlight">\(u_{\mathcal{H}}\)</span>，这个过程是确定的、线性的。</p>
+<p>而在有损数据压缩方案中，所采用的编码方案是将原序列<span class="math notranslate nohighlight">\(y_{1:N}\)</span>的带噪声的先验概率分布<span class="math notranslate nohighlight">\(P_Y\)</span>输入SC译码器的顶层，然后运行SC迭代译码算法，将特定的一部分<span class="math notranslate nohighlight">\(u_F\)</span>强制置<span class="math notranslate nohighlight">\(0\)</span>、剩余部分<span class="math notranslate nohighlight">\(u_{F^c}\)</span>通过这个译码过程随机地生成。最后输出的结果是随机生成的<span class="math notranslate nohighlight">\(u_{F^c}\)</span>。某种程度上，这可以理解为是一种“带不确定性的极化软变换”，最终输出的是从不确定的变换结果中随机挑出的一个。</p>
+<blockquote>
+<div><p>实际上使用最大概率rounding替换randomized rounding，也可以达到率失真界，但不方便理论分析所以在文中没有被采用。</p>
+</div></blockquote>
+<p>基于上面这份代码可以进行各种实验，例如固定码长<span class="math notranslate nohighlight">\(N\)</span>、固定设计失真度<span class="math notranslate nohighlight">\(D\)</span>，对不同的码率<span class="math notranslate nohighlight">\(R\)</span>可以得到不同的极化码<span class="math notranslate nohighlight">\(C_N(F,u_F)\)</span>。考虑到它们对应了相同的<span class="math notranslate nohighlight">\(N\)</span>个Bhattacharyya参数，不同极化码之间的区别就是简单的调整码率<span class="math notranslate nohighlight">\(R\)</span>，具有明显的共性。不妨将这些极化码视作同一类“衍生极化码”。我们可以绘制“D-失真度衍生极化码”的率失真函数。在不同的设计失真度下，它们的率失真函数各不相同，从而形成一个包络线，如图所示：</p>
+<p><img alt="不同方案的包络" src="../_images/rate_distortion.png" /></p>
+<p>可以发现，所谓的“D-失真度衍生极化码”并不能达到率失真函数界。若使用时的码率<span class="math notranslate nohighlight">\(R\)</span>比设计失真度<span class="math notranslate nohighlight">\(D\)</span>对应码率<span class="math notranslate nohighlight">\(R(D)\)</span>小太多，输出的信息量太少，将会导致失真度陡增；若使用时的码率<span class="math notranslate nohighlight">\(R\)</span>比设计失真度<span class="math notranslate nohighlight">\(D\)</span>对应码率<span class="math notranslate nohighlight">\(R(D)\)</span>大，则额外输出的比特并不能改善失真度，而是会趋近于设计失真度<span class="math notranslate nohighlight">\(D\)</span>。</p>
 </section>
 </section>
 </section>
@@ -599,8 +751,10 @@ u_i, &amp;\text{if } i \in \mathcal{H} \\
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2. 有损压缩</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.1 限失真信源压缩问题</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.1 限失真信源编码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.2 极化码回顾</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.3 核心内容</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.4 仿真与总结</a></li>
 </ul>
 </li>
 </ul>

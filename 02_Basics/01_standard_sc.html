@@ -523,9 +523,9 @@ document.write(`
 <p>对于第<span class="math notranslate nohighlight">\(i\)</span>个极化信道<span class="math notranslate nohighlight">\(W^{(i)}_N(Y_{1:N},U_{1:i-1}|U_i)\)</span>而言，直接求其转移概率矩阵是不可能的，因为这个矩阵形状为<span class="math notranslate nohighlight">\(2\times 2^{N+i-1}\)</span>，所有可能的输出情况数随码长<span class="math notranslate nohighlight">\(N\)</span>和索引<span class="math notranslate nohighlight">\(i\)</span>指数级增长。尽管无法求出其所有列，但我们可以准确地求出指定的某一列，这可以通过对极化变换<span class="math notranslate nohighlight">\(\mathbf{G}_N\)</span>进行Bayes推理得到，所采用的算法是置信度传播算法，其计算复杂度为<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{N})\)</span>。</p>
 <p>根据极化码的递归结构，我们可以从右到左，将第<span class="math notranslate nohighlight">\(i\)</span>层中间变量拆分为<span class="math notranslate nohighlight">\(2^i\)</span>个大小为<span class="math notranslate nohighlight">\(N/2^i\)</span>的树节点，从而构成一颗二叉树，如下图所示：</p>
 <p><img alt="极化二叉树" src="../_images/polar_tree.jpg" /></p>
-<p>上一小节介绍的两个推理问题，实际上就是子树上的两个推理问题，其树状推理图如下所示，相应的计算方法均已给出：</p>
+<p>上一小节介绍的两个推理问题，实际上就是子树上的两个推理问题，其树状推理图如下所示，相应的计算方法均已给出（注意二叉树的左子节点指的是靠上的那个小节点，二叉树的右子节点指的是靠下的那个小节点）：</p>
 <p><img alt="二叉树上的推理" src="../_images/tree_inference.jpg" /></p>
-<p>以<span class="math notranslate nohighlight">\(N=4,i=3\)</span>为例，条件概率分布<span class="math notranslate nohighlight">\(\Pr(U_i|Y_{1:N}=y_{1:N},U_{1:i-1}=u_{1:i-1})\)</span>的推理图为：</p>
+<p>以<span class="math notranslate nohighlight">\(N=4,i=3\)</span>为例，条件概率分布<span class="math notranslate nohighlight">\(\Pr(U_3|Y_{1:4}=y_{1:4},U_{1:2}=u_{1:2})\)</span>的推理图为：</p>
 <p><img alt="推理示例图" src="../_images/some_inference.jpg" /></p>
 <p>按照这种二叉树表示法，可以很方便地计算任意条件概率分布。</p>
 </section>
@@ -534,10 +534,10 @@ document.write(`
 <p>回到极化码的译码问题中来，接收端的任务是根据信道输出结果<span class="math notranslate nohighlight">\(Y_{1:N}=y_{1:N}\)</span>，对随机变量<span class="math notranslate nohighlight">\(U_{1:N}\)</span>的取值进行估计。Arikan提出了一种简单直接的做法，就是串行地从<span class="math notranslate nohighlight">\(i=1\)</span>到<span class="math notranslate nohighlight">\(N\)</span>，依次计算条件概率分布：</p>
 <div class="math notranslate nohighlight">
 \[\Pr(U_i|Y_{1:N}=y_{1:N},U_{1:i-1}=\hat{u}_{1:i-1})\]</div>
-<p>若不是冻结比特，则执行最大似然判决：</p>
+<p>若是冻结比特，则直接获取已知的值<span class="math notranslate nohighlight">\(\hat{u}_i\gets 0\)</span>；若不是冻结比特，则执行最大似然判决：</p>
 <div class="math notranslate nohighlight">
 \[\hat{u}_i \gets \mathop{\arg\max}\limits_{k}\Pr(U_i|Y_{1:N}=y_{1:N},U_{1:i-1}=\hat{u}_{1:i-1})\]</div>
-<p>回顾之前的最小和SC译码章节，其中介绍到、但并未详细解释的特殊译码顺序，就来源于此串行译码过程。</p>
+<p>回顾之前的最小和SC译码章节，其中介绍到，递归译码过程有一点类似于<strong>二叉树的左序遍历</strong>。实际上，该特殊的译码顺序，就来源于这里介绍的从<span class="math notranslate nohighlight">\(i=1\)</span>到<span class="math notranslate nohighlight">\(N\)</span>串行计算各概率分布的过程。</p>
 <blockquote>
 <div><p>注意条件部分是估计值<span class="math notranslate nohighlight">\(\hat{u}\)</span>而不是真实值<span class="math notranslate nohighlight">\(u\)</span>，这是因为真实值对译码器而言是不可见的。</p>
 </div></blockquote>
