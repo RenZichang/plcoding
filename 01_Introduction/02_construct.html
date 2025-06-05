@@ -410,7 +410,7 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>信道容量0.50[bit]
 </pre></div>
 </div>
-<img alt="../_images/4a382bbc093e462134210d6196c29ac08163cc74ce045d06630b76528990280e.png" src="../_images/4a382bbc093e462134210d6196c29ac08163cc74ce045d06630b76528990280e.png" />
+<img alt="../_images/58db7a3214aa724cae40d469f2a478ba3803cf9fb36a8b84cb2d265a9fb76946.png" src="../_images/58db7a3214aa724cae40d469f2a478ba3803cf9fb36a8b84cb2d265a9fb76946.png" />
 </div>
 </div>
 <p>在码长有限的实际场景下，并不是只要编码码率低于信道容量，就可以实现无错误通信。事实上，从上图不难看出，短码长下极化码的性能还是很差的。虽然这一定程度上跟我们所采用了非最优的BEC算法有关，但即便采用最优构造法，性能也不会好太多。</p>
@@ -433,30 +433,32 @@ document.write(`
 <li><p>给定一个实数<span class="math notranslate nohighlight">\(e \in (0, 1)\)</span>，我们根据它计算得到两个新的值<span class="math notranslate nohighlight">\(e^2\)</span>和<span class="math notranslate nohighlight">\(2e - e^2\)</span>，也即<span class="math notranslate nohighlight">\((e) \to (e^2, 2e - e^2)\)</span>；</p></li>
 <li><p>分别对这两个新的值，继续执行上述操作：记<span class="math notranslate nohighlight">\(\alpha = e^2, \beta = 2e - e^2\)</span>，那么有<span class="math notranslate nohighlight">\((\alpha, \beta) \to (\alpha^2, 2\alpha - \alpha^2,\beta^2,  2\beta - \beta^2)\)</span></p></li>
 </ul>
-<p>依照上述过程，对码长为<span class="math notranslate nohighlight">\(N=2^n\)</span>的极化码而言，应当重复<span class="math notranslate nohighlight">\(n\)</span>次，最终会得到长度为<span class="math notranslate nohighlight">\(N\)</span>的序列，它们表示<span class="math notranslate nohighlight">\(N\)</span>个极化信道各自的可靠度。这个过程很容易通过代码实现：</p>
+<p>依照上述过程，对码长为<span class="math notranslate nohighlight">\(N=2^n\)</span>的极化码而言，应当重复<span class="math notranslate nohighlight">\(n\)</span>次，最终会得到长度为<span class="math notranslate nohighlight">\(N\)</span>的序列，它们表示<span class="math notranslate nohighlight">\(N\)</span>个极化信道各自的不可靠度，我们只需要将它们取负号再加一，即可得到可靠度序列。这个过程很容易通过代码实现：</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 初始化几个关键值</span>
-<span class="n">e</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">10</span>
+<span class="n">e</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">10</span>
 <span class="c1"># 迭代执行上述过程</span>
 <span class="n">old_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">new_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">old_list</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">element</span> <span class="o">**</span> <span class="mi">2</span>                <span class="c1"># e^2</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">element</span> <span class="o">-</span> <span class="n">element</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># 2e-e^2</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">element</span> <span class="o">-</span> <span class="n">element</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># 2e-e^2</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">element</span> <span class="o">**</span> <span class="mi">2</span>                <span class="c1"># e^2</span>
         <span class="n">new_list</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
     <span class="n">old_list</span> <span class="o">=</span> <span class="n">new_list</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">old_list</span><span class="p">)):</span>
+    <span class="n">old_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">old_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 <span class="c1"># 简单绘制一下</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">old_list</span><span class="p">,</span> <span class="s1">&#39;r.&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/e744ed15a397b8c83d3cecf826a7cdfc70e1b41b16b535f2609b39fb00bd8b58.png" src="../_images/e744ed15a397b8c83d3cecf826a7cdfc70e1b41b16b535f2609b39fb00bd8b58.png" />
+<img alt="../_images/bdfcd59870e7b23a7e68e925e48bebfaebfa988cde282456c4a930ded79dbc77.png" src="../_images/bdfcd59870e7b23a7e68e925e48bebfaebfa988cde282456c4a930ded79dbc77.png" />
 </div>
 </div>
 </section>
