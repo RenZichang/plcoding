@@ -430,10 +430,10 @@ document.write(`
 </ol>
 <p><strong>BEC构造法的具体实现</strong>：</p>
 <ul class="simple">
-<li><p>给定一个实数<span class="math notranslate nohighlight">\(e \in (0, 1)\)</span>，我们根据它计算得到两个新的值<span class="math notranslate nohighlight">\(e^2\)</span>和<span class="math notranslate nohighlight">\(2e - e^2\)</span>，也即<span class="math notranslate nohighlight">\((e) \to (e^2, 2e - e^2)\)</span>；</p></li>
-<li><p>分别对这两个新的值，继续执行上述操作：记<span class="math notranslate nohighlight">\(\alpha = e^2, \beta = 2e - e^2\)</span>，那么有<span class="math notranslate nohighlight">\((\alpha, \beta) \to (\alpha^2, 2\alpha - \alpha^2,\beta^2,  2\beta - \beta^2)\)</span></p></li>
+<li><p>给定一个实数<span class="math notranslate nohighlight">\(e \in (0, 1)\)</span>，我们根据它计算得到两个新的值<span class="math notranslate nohighlight">\(2e - e^2\)</span>和<span class="math notranslate nohighlight">\(e^2\)</span>，也即<span class="math notranslate nohighlight">\((e) \to (2e - e^2, e^2)\)</span>；</p></li>
+<li><p>分别对这两个新的值，继续执行上述操作：记<span class="math notranslate nohighlight">\(\alpha = 2e - e^2, \beta = e^2\)</span>，那么有<span class="math notranslate nohighlight">\((\alpha, \beta) \to (2\alpha - \alpha^2, \alpha^2,2\beta - \beta^2,  \beta^2)\)</span></p></li>
 </ul>
-<p>依照上述过程，对码长为<span class="math notranslate nohighlight">\(N=2^n\)</span>的极化码而言，应当重复<span class="math notranslate nohighlight">\(n\)</span>次，最终会得到长度为<span class="math notranslate nohighlight">\(N\)</span>的序列，它们表示<span class="math notranslate nohighlight">\(N\)</span>个极化信道各自的不可靠度，我们只需要将它们取负号再加一，即可得到可靠度序列。这个过程很容易通过代码实现：</p>
+<p>依照上述过程，对码长为<span class="math notranslate nohighlight">\(N=2^n\)</span>的极化码而言，应当重复<span class="math notranslate nohighlight">\(n\)</span>次，最终会得到长度为<span class="math notranslate nohighlight">\(N\)</span>的序列，它们表示<span class="math notranslate nohighlight">\(N\)</span>个极化信道的擦除率。接下来将这些擦除率取负号再加一，即可得到对应的<strong>可靠度序列</strong>。这个过程很容易通过代码实现：</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 初始化几个关键值</span>
