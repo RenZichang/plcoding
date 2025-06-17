@@ -380,7 +380,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">plcoding</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">plcoding.cpp_core.iterator</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarIterator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plcoding.cpp_core.classics</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarIterator</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 </pre></div>
@@ -433,7 +433,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/15cb1b234452c70318dfb2598b925542cc5d21ddf749ff2bc37a3ca482028214.png" src="../_images/15cb1b234452c70318dfb2598b925542cc5d21ddf749ff2bc37a3ca482028214.png" />
+<img alt="../_images/fef1ac3e6a111305d7e0b5db627136abafaedcd81b44bfdfcbb9a222d713ad25.png" src="../_images/fef1ac3e6a111305d7e0b5db627136abafaedcd81b44bfdfcbb9a222d713ad25.png" />
 </div>
 </div>
 <p>从上图中可以看出，使用Monte-Carlo法估计错判率的精度是比较差的。实际上，Arikan的建议是统计它们Bhattacharyya参数：</p>
@@ -476,7 +476,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/72112643eb3add5f5adfdbc8a3d8448493bbcd84b602c7383f05d26124f36a3d.png" src="../_images/72112643eb3add5f5adfdbc8a3d8448493bbcd84b602c7383f05d26124f36a3d.png" />
+<img alt="../_images/5ccfbf99d84cef4823af3703ac439fb1556a6f03b964a90a820f04abc888187e.png" src="../_images/5ccfbf99d84cef4823af3703ac439fb1556a6f03b964a90a820f04abc888187e.png" />
 </div>
 </div>
 <p>可以发现准确度高了很多，直观上可以理解为省去了判决的过程，直接使用了在每次实验中的错判率期望值。</p>
